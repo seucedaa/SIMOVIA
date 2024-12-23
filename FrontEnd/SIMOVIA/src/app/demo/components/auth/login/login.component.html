@@ -1,0 +1,99 @@
+
+<div class="background-login" style="width: 100%; height: 100%"></div>
+<p-toast></p-toast>
+
+<div
+    class="flex align-items-center justify-content-center min-w-screen overflow-hidden"
+>
+    <div
+        class="flex flex-column align-items-center justify-content-center"
+        style="padding: 1.5rem"
+    >
+        <div
+            style="
+                border-radius: 56px;
+                padding: 0.3rem;
+                background: linear-gradient(180deg, #757d92 10%, #ae99ac 75%);
+            "
+        >
+            <div class="surface-card py-6 px-5" style="border-radius: 53px">
+                <div class="text-center mb-5">
+                    <img
+                        src="assets/layout/images/SIMOVIA.png"
+                        alt="SIMOVIA logo"
+                        class="mb-2 w-12rem flex-shrink-0"
+                    />
+                </div>
+
+                <div>
+                    <div class="flex flex-column">
+                        <span class="p-float-label p-input-icon-left">
+                            <i class="pi pi-user"></i>
+                            <input
+                                [(ngModel)]="usuario"
+                                required
+                                autofocus
+                                maxlength="80"
+                                type="text"
+                                pInputText
+                                [ngClass]="{
+                                    'ng-invalid ng-dirty':
+                                        enviado && !usuario
+                                }"
+                            />
+                            <label>Usuario</label>
+                        </span>
+                        <small
+                            class="ng-dirty ng-invalid"
+                            *ngIf="enviado && !usuario"
+                            style="color: #fc6161 !important"
+                        >
+                            El campo es requerido.
+                        </small>
+                    </div>
+                    <div class="flex flex-column">
+                        <span class="p-float-label p-input-icon-left">
+                            <i class="pi pi-lock"></i>
+                            <p-password
+                                [(ngModel)]="clave"
+                                [toggleMask]="true"
+                                [feedback]="false"
+                                required
+                                maxlength="64"
+                                [ngClass]="{
+                                    'ng-invalid ng-dirty': enviado && !clave
+                                }"
+                                style="width: 400px"
+                            ></p-password>
+                            <label>Contraseña</label>
+                        </span>
+                        <small
+                            class="ng-dirty ng-invalid"
+                            *ngIf="enviado && !clave"
+                            style="color: #fc6161 !important"
+                        >
+                            El campo es requerido.
+                        </small>
+                    </div>
+                    
+
+                    <div class="flex flex-column mb-3">
+                        <small
+                            class="ng-dirty ng-invalid"
+                            *ngIf="enviado && credencialesIncorrectas"
+                            style="color: #fc6161 !important"
+                        >
+                            Credenciales Incorrectas.
+                        </small>
+                    </div>
+                    <button
+                        pButton
+                        label="Iniciar sesión"
+                        class="w-full p-3 text-xl"
+                        (click)="login()"
+                    ></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

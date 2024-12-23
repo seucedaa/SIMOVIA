@@ -1,0 +1,17 @@
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.DataAccess\bin\Debug\net5.0\SIMOVIA.DataAccess.deps.json
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.DataAccess\bin\Debug\net5.0\SIMOVIA.DataAccess.dll
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.DataAccess\bin\Debug\net5.0\ref\SIMOVIA.DataAccess.dll
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.DataAccess\bin\Debug\net5.0\SIMOVIA.DataAccess.pdb
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.DataAccess\bin\Debug\net5.0\SIMOVIA.Common.dll
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.DataAccess\bin\Debug\net5.0\SIMOVIA.Entities.dll
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.DataAccess\bin\Debug\net5.0\SIMOVIA.Common.pdb
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.DataAccess\bin\Debug\net5.0\SIMOVIA.Entities.pdb
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.DataAccess\obj\Debug\net5.0\SIMOVIA.DataAccess.csproj.AssemblyReference.cache
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.DataAccess\obj\Debug\net5.0\SIMOVIA.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.DataAccess\obj\Debug\net5.0\SIMOVIA.DataAccess.AssemblyInfoInputs.cache
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.DataAccess\obj\Debug\net5.0\SIMOVIA.DataAccess.AssemblyInfo.cs
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.DataAccess\obj\Debug\net5.0\SIMOVIA.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.DataAccess\obj\Debug\net5.0\SIMOVIA.DataAccess.csproj.CopyComplete
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.DataAccess\obj\Debug\net5.0\SIMOVIA.DataAccess.dll
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.DataAccess\obj\Debug\net5.0\ref\SIMOVIA.DataAccess.dll
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.DataAccess\obj\Debug\net5.0\SIMOVIA.DataAccess.pdb

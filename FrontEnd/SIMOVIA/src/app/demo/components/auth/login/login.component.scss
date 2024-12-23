@@ -1,0 +1,56 @@
+::ng-deep body {
+    background-color: #beb1c2;
+    margin: 0;
+    height: 100vh; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.background-login {
+    width: 100%;
+    height: 100%;
+}
+
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%; 
+}
+
+.flex.flex-column {
+    margin-bottom: 2rem;
+}
+
+::ng-deep .p-inputtext {
+    width: 400px;
+}
+
+.p-input-icon-left {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.p-input-icon-left .pi-lock {
+    position: absolute;
+    left: 10px; 
+    top: 70%;
+    transform: translateY(-50%); 
+    z-index: 1;
+}
+
+.p-input-icon-left input {
+    padding-left: 2.5rem !important; 
+    width: 100%;
+}
+
+::ng-deep .p-input-icon-left .p-password .p-inputtext {
+    padding-left: 2.5rem !important; 
+    box-sizing: border-box; 
+}
+
+::ng-deep .p-password {
+    width: 100%;
+}

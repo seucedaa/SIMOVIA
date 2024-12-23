@@ -1,0 +1,12 @@
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.Entities\bin\Debug\net5.0\SIMOVIA.Entities.deps.json
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.Entities\bin\Debug\net5.0\SIMOVIA.Entities.dll
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.Entities\bin\Debug\net5.0\ref\SIMOVIA.Entities.dll
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.Entities\bin\Debug\net5.0\SIMOVIA.Entities.pdb
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.Entities\obj\Debug\net5.0\SIMOVIA.Entities.csproj.AssemblyReference.cache
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.Entities\obj\Debug\net5.0\SIMOVIA.Entities.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.Entities\obj\Debug\net5.0\SIMOVIA.Entities.AssemblyInfoInputs.cache
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.Entities\obj\Debug\net5.0\SIMOVIA.Entities.AssemblyInfo.cs
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.Entities\obj\Debug\net5.0\SIMOVIA.Entities.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.Entities\obj\Debug\net5.0\SIMOVIA.Entities.dll
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.Entities\obj\Debug\net5.0\ref\SIMOVIA.Entities.dll
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.Entities\obj\Debug\net5.0\SIMOVIA.Entities.pdb
