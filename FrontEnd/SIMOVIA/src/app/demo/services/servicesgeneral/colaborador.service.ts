@@ -34,8 +34,8 @@ export class colaboradorService {
     if (this.colaId) {
         return this.colaId;
     }
-    const savedId = localStorage.getItem('colaId');
-    return savedId ? Number(savedId) : null;
+    const guardarId = localStorage.getItem('colaId');
+    return guardarId ? Number(guardarId) : null;
   }
 
   limpiarId() {
@@ -52,6 +52,11 @@ export class colaboradorService {
     const url = `${this.colaborador}Eliminar?id=${colaId}`;
     return this.http.delete(url, this.getHttpOptions());
   }
+
+  Insertar(optante: colaborador): Observable<any> {
+    const url = `${this.colaborador}Insertar`;
+    return this.http.post(url, optante, this.getHttpOptions());
+}
 
   Buscar(cola_Id: number){
     return this.http.get<colaborador[]>(`${this.colaborador}Buscar/${cola_Id}`,this.getHttpOptions());

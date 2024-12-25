@@ -16,8 +16,6 @@ namespace SIMOVIA.Common.Models.ModelsGeneral
         public string cola_Telefono { get; set; }
         public string cola_Sexo { get; set; }
         public DateTime cola_FechaNacimiento { get; set; }
-        public string cola_ObservacionActivar { get; set; }
-        public string cola_ObservacionInactivar { get; set; }
         public int muni_Id { get; set; }
         public int civi_Id { get; set; }
         public int carg_Id { get; set; }

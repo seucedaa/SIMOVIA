@@ -105,10 +105,6 @@ namespace SIMOVIA.DataAccess.Context
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.cola_ObservacionActivar).IsUnicode(false);
-
-                entity.Property(e => e.cola_ObservacionInactivar).IsUnicode(false);
-
                 entity.Property(e => e.cola_Sexo)
                     .IsRequired()
                     .HasMaxLength(1)
@@ -496,6 +492,8 @@ namespace SIMOVIA.DataAccess.Context
                 entity.ToTable("tbViajesEncabezado", "Viaj");
 
                 entity.Property(e => e.vien_Estado).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.vien_Fecha).HasColumnType("datetime");
 
                 entity.Property(e => e.vien_FechaCreacion).HasColumnType("datetime");
 

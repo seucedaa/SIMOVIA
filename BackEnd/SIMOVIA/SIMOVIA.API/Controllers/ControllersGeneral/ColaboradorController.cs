@@ -46,8 +46,7 @@ namespace SIMOVIA.API.Controllers.ControllersGeneral
         /// <returns>
         /// Una respuesta HTTP que contiene el resultado de la operación:
         /// - 200: Si la inserción fue exitosa, devuelve el ID del colaborador.
-        /// - 409: Si el DNI o el correo electrónico ya existen.
-        /// - 500: Si ocurrió un error inesperado durante la operación.
+        /// - 202: Si el DNI o el correo electrónico ya existen.
         /// </returns>
         [HttpPost("Insertar")]
         public virtual IActionResult Create(ColaboradorViewModel rolViewModel)
@@ -64,13 +63,43 @@ namespace SIMOVIA.API.Controllers.ControllersGeneral
         /// <returns>
         /// Una respuesta HTTP que contiene el resultado de la operación:
         /// - 200: Si se encuentra el colaborador, devuelve sus datos.
-        /// - 500: Si ocurre un error inesperado durante la operación.
         /// </returns>
         [HttpGet("Buscar/{id}")]
         public IActionResult Buscar(int id)
         {
             var response = _colaboradorService.Buscar(id);
             return Ok(response.Data);
+        }
+
+        /// <summary>
+        /// Actualiza un colaborador en la base de datos.
+        /// </summary>
+        /// <param name="colaboradorViewModel">El objeto ColaboradorViewModel que contiene los datos del colaborador a actualizar.</param>
+        /// <returns>
+        /// Una respuesta HTTP que contiene el resultado de la operación:
+        /// - 200: Si la Actualición fue exitosa, devuelve 1.
+        /// - 202: Si el DNI o el correo electrónico ya existen.
+        /// </returns>
+        [HttpPut("Actualizar")]
+        public virtual IActionResult Update(ColaboradorViewModel colaboradorViewModel)
+        {
+            var modelo = _mapper.Map<ColaboradorViewModel, tbColaboradores>(colaboradorViewModel);
+            var response = _colaboradorService.Actualizar(modelo);
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Deshabilita un colaborador en la base de datos.
+        /// </summary>
+        /// <returns>
+        /// Una respuesta HTTP que contiene el resultado de la operación:
+        /// - 200: Si la Eliminación fue exitosa, devuelve 1.
+        /// </returns>
+        [HttpDelete("Eliminar")]
+        public IActionResult Delete(int id)
+        {
+            var response = _colaboradorService.Eliminar(id);
+            return Ok(response);
         }
     }
 }

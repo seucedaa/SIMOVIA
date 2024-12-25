@@ -4,6 +4,10 @@
         <div class="card px-4 py-4">
             <h1 class="text-center">Colaboradores</h1>
             <hr />
+            <div *ngIf="cargando" class="flex justify-content-center align-items-center" style="height: 300px;">
+                <p-progressSpinner></p-progressSpinner>
+            </div>
+            <div *ngIf="!cargando">
             <div class="grid mt-2 align-items-center">
                 <div class="col-6">
                     <button
@@ -12,6 +16,7 @@
                         icon="pi pi-plus"
                         label="Nuevo"
                         class="mr-2"
+                        class="p-button-secondary"
                     ></button>
                 </div>
                 <div class="col-6 text-right">
@@ -20,7 +25,6 @@
                         pRipple
                         label="Exportar"
                         icon="pi pi-upload"
-                        class="p-button-secondary"
                         (click)="dt.exportCSV()"
                     ></button>
                 </div>
@@ -114,6 +118,7 @@
                 </ng-template>
             </p-table>
         </div>
+        </div>
 
         <p-dialog
             [(visible)]="eliminarColaborador"
@@ -127,8 +132,7 @@
                     style="font-size: 2rem"
                 ></i>
                 <span *ngIf="esColaboradorSeleccionado">
-                    ¿Está seguro de que desea eliminar el colaborador 
-                    <!-- <b>{{ colaboradorSeleccionado.colaborador }}</b>? -->
+                    ¿Está seguro de que desea eliminar el colaborador <b>{{ colaboradorSeleccionado?.colaborador }}</b>?
                 </span>
             </div>
             <ng-template pTemplate="footer">

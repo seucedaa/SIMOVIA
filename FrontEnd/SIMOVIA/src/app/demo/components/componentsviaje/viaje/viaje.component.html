@@ -1,0 +1,162 @@
+<p-toast></p-toast>
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-4 py-4">
+            <h1 class="text-center">Viaje</h1>
+            <hr />
+            <div *ngIf="cargando" class="flex justify-content-center align-items-center" style="height: 300px;">
+                <p-progressSpinner></p-progressSpinner>
+            </div>
+            <div *ngIf="!cargando">
+            <div class="grid mt-2 align-items-center">
+                <div class="col-6">
+                    <button
+                        routerLink="viajecrear"
+                        pButton
+                        icon="pi pi-plus"
+                        label="Nuevo"
+                        class="mr-2"
+                        class="p-button-secondary"
+                    ></button>
+                </div>
+                <div class="col-6 text-right">
+                    <button
+                        pButton
+                        pRipple
+                        label="Exportar"
+                        icon="pi pi-upload"
+                        (click)="dt.exportCSV()"
+                    ></button>
+                </div>
+            </div>
+            <p-table
+                #dt
+                [exportFilename]='exportar'
+                [value]="viajes"
+                [columns]="columnas"
+                styleClass="mt-2"
+                responsiveLayout="scroll"
+                [rows]="10"
+                [globalFilterFields]="['codigo', 'vien_DistanciaTotalkm', 'transportista', 'vien_Fecha', 'sucursal', 'vien_Total']"
+                [paginator]="true"
+                [showCurrentPageReport]="true"
+                [rowsPerPageOptions]="[10,25,50,100]"
+                [rowHover]="true"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+            >
+                <ng-template pTemplate="caption">
+                    <div
+                        class="flex justify-content-between align-items-center"
+                    >
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input
+                                pInputText
+                                type="text"
+                                (input)="onGlobalFilter(dt, $event)"
+                                placeholder="Buscar..."
+                            />
+                        </span>
+                        <div>
+                            <p-dropdown [options]="dt.rowsPerPageOptions" [(ngModel)]="dt.rows" [style]="{ 'margin-right': '5px' }"></p-dropdown>
+
+                            <span style="font-weight: 700; margin-top: 7px;"> Registros por página</span>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th class="text-center">Acciones</th>
+                        <th pSortableColumn="codigo">
+                            No. <p-sortIcon field="codigo"></p-sortIcon>
+                        </th>
+                        <th class="text-center" pSortableColumn="vien_DistanciaTotalkm">
+                            Distancia
+                            <p-sortIcon field="vien_DistanciaTotalkm"></p-sortIcon>
+                        </th>
+                        <th class="text-center" pSortableColumn="transportista">
+                            Encargado
+                            <p-sortIcon field="transportista"></p-sortIcon>
+                        </th>
+                        <th class="text-center" pSortableColumn="vien_Fecha">
+                            Fecha
+                            <p-sortIcon field="vien_Fecha"></p-sortIcon>
+                        </th>
+                        <th class="text-center" pSortableColumn="sucursal">
+                            Sucursal
+                            <p-sortIcon field="sucursal"></p-sortIcon>
+                        </th>
+                        <th class="text-center" pSortableColumn="vien_Total">
+                            Total 
+                            <p-sortIcon field="vien_Total"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-viaje>
+                    <tr>
+                        <td>
+                            <p-splitButton
+                                appendTo="body"
+                                label="Acciones"
+                                icon="pi pi-cog"
+                                [model]="acciones"
+                                (onDropdownClick)="esViajeSeleccionado(viaje)">
+                            </p-splitButton>
+                        </td>
+                        <td>
+                            {{ viaje.codigo }}
+                        </td>
+                        <td>
+                            {{ viaje.vien_DistanciaTotalkm }} Km
+                        </td>
+                        <td>
+                            {{ viaje.transportista }}
+                        </td>
+                        <td>
+                            {{ viaje.vien_Fecha | date : "dd/MM/yyyy"}}
+                        </td>
+                        <td>
+                            {{ viaje.sucursal }}
+                        </td>
+                        <td>
+                            {{ viaje.vien_Total  | number:'1.2-2'}}
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        </div>
+
+        <p-dialog
+            [(visible)]="eliminarViaje"
+            header="Confirmación"
+            [modal]="true"
+            [style]="{ width: '450px' }"
+        >
+            <div class="flex align-items-center justify-content-center">
+                <i
+                    class="pi pi-exclamation-triangle mr-3"
+                    style="font-size: 2rem"
+                ></i>
+                <span *ngIf="esViajeSeleccionado">
+                    ¿Está seguro de que desea eliminar el viaje <b>{{ viajeSeleccionado?.viaje }}</b>?
+                </span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button
+                    pButton pRipple
+                    icon="pi pi-trash"
+                    label="Eliminar"
+                    (click)="confirmarEliminarViaje()"
+                ></button>
+                <button
+                    pButton pRipple
+                    icon="pi pi-times"
+                    class="p-button-outlined p-button-primary"
+                    label="Cancelar"
+                    (click)="eliminarViaje = false"
+                ></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>

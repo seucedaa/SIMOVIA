@@ -30,6 +30,14 @@ namespace SIMOVIA.BusinessLogic
             service.AddScoped<MunicipioRepository>();
             service.AddScoped<EstadoCivilRepository>();
             #endregion
+
+            #region Viaje
+            service.AddScoped<SucursalRepository>();
+            service.AddScoped<TransportistaRepository>();
+            service.AddScoped<ColaboradorPorSucursalRepository>();
+            service.AddScoped<ViajeEncabezadoRepository>();
+            service.AddScoped<ViajeDetalleRepository>();
+            #endregion
         }
         public static void BusinessLogic(this IServiceCollection service)
         {
@@ -43,6 +51,14 @@ namespace SIMOVIA.BusinessLogic
             service.AddScoped<DepartamentoService>();
             service.AddScoped<MunicipioService>();
             service.AddScoped<EstadoCivilService>();
+            #endregion
+
+            #region Viaje
+            service.AddScoped<SucursalService>();
+            service.AddScoped<TransportistaService>();
+            service.AddScoped<ColaboradorPorSucursalService>();
+            service.AddScoped<ViajeEncabezadoService>();
+            service.AddScoped<ViajeDetalleService>();
             #endregion
         }
     }

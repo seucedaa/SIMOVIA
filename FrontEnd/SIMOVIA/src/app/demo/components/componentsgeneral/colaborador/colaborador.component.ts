@@ -21,6 +21,9 @@ export class ColaboradorComponent implements OnInit {
     acciones: MenuItem[] = [];
     exportar:string = 'SIMOVIA - Colaboradores';
 
+    cargando: boolean = false;
+
+
     constructor(
         private colaboradorService: colaboradorService,
         private messageService: MessageService,
@@ -62,12 +65,20 @@ export class ColaboradorComponent implements OnInit {
     }
 
     cargarColaboradores() {
+        this.cargando = true; 
         this.colaboradorService.Listar().subscribe({
             next: (data) => {
                 this.colaboradores = data;
-            }
+            },
+            error: (err) => {
+                console.error('Error al cargar colaboradores:', err);
+            },
+            complete: () => {
+                this.cargando = false; 
+            },
         });
     }
+    
 
     detalleColaborador(colaborador: colaborador) {
         this.colaboradorService.almacenarId(colaborador.cola_Id!);
@@ -80,7 +91,6 @@ export class ColaboradorComponent implements OnInit {
     }
 
     modalEliminarColaborador(colaborador: colaborador) {
-        console.log('mostrar', colaborador);
         this.colaboradorSeleccionado = colaborador; 
         this.eliminarColaborador = true; 
     }

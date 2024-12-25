@@ -1,0 +1,126 @@
+<div class="card">
+    <!-- Encabezado -->
+    <div
+        style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            height: 50px;
+        "
+    >
+        <div style="position: absolute; left: 0">
+            <button
+                (click)="regresar()"
+                class="p-button-link"
+                pButton
+                pRipple
+                type="button"
+                label="Regresar"
+                icon="pi pi-arrow-left"
+                style="box-shadow: none !important"
+            ></button>
+        </div>
+
+        <div>
+            <h1 style="margin: 0">Detalle Colaborador</h1>
+        </div>
+    </div>
+
+    <hr />
+
+    <!-- Spinner de Carga -->
+    <div
+        *ngIf="cargando"
+        class="flex justify-content-center align-items-center"
+        style="height: 300px"
+    >
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+
+    <!-- Detalles del Colaborador -->
+    <div *ngIf="!cargando">
+        <div class="grid p-fluid mt-3">
+            <div class="field col-12 md:col-3">
+                <label><b>Número de Identidad</b></label>
+                <p>{{ colaborador?.cola_DNI }}</p>
+            </div>
+            <div class="field col-12 md:col-3">
+                <label><b>Colaborador</b></label>
+                <p>{{ colaborador?.colaborador }}</p>
+            </div>
+            <div class="field col-12 md:col-3">
+                <label><b>Correo Electrónico</b></label>
+                <p>{{ colaborador?.cola_CorreoElectronico }}</p>
+            </div>
+            <div class="field col-12 md:col-3">
+                <label><b>Fecha de Nacimiento</b></label>
+                <p>{{ colaborador?.cola_FechaNacimiento | date : "dd/MM/yyyy" }}</p>
+            </div>
+            <div class="field col-12 md:col-3">
+                <label><b>Cargo</b></label>
+                <p>{{ colaborador?.cargo }}</p>
+            </div>
+            <div class="field col-12 md:col-3">
+                <label><b>Municipio</b></label>
+                <p>{{ colaborador?.municipio }}</p>
+            </div>
+            <div class="field col-12 md:col-3">
+                <label><b>Sexo</b></label>
+                <p>{{ colaborador?.sexo }}</p>
+            </div>
+            <div class="field col-12 md:col-3">
+                <label><b>Estado Civil</b></label>
+                <p>{{ colaborador?.estadocivil }}</p>
+            </div>
+        </div>
+
+        <h3>Sucursales</h3>
+        <div class="grid p-fluid mt-3">
+            <div class="field col-12 md:col-3" *ngFor="let sucursal of sucursalesColaborador">
+                <p>{{ sucursal.sucu_Descripcion }}</p>
+            </div>
+        </div>
+        
+
+        <!-- Auditoría -->
+         <div class="card">
+
+        <h3><b>Auditoría</b></h3>
+        <hr>
+        <p-table
+            [value]="[colaborador]"
+            responsiveLayout="scroll"
+            styleClass="p-datatable-striped"
+        >
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Acción</th>
+                    <th>Usuario</th>
+                    <th>Fecha</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-colaborador>
+                <tr>
+                    <td>Creado</td>
+                    <td>{{ colaborador.usuarioCreacion || "N/A" }}</td>
+                    <td>
+                        {{ colaborador.cola_FechaCreacion | date : "dd/MM/yyyy hh:mm:ss a" }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Modificado</td>
+                    <td>{{ colaborador.usuarioModificacion || "N/A" }}</td>
+                    <td>
+                        {{
+                            colaborador.cola_FechaModificacion ? (colaborador.cola_FechaModificacion
+                                  | date : "dd/MM/yyyy hh:mm:ss a") : "N/A"
+                        }}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    </div>
+</div>

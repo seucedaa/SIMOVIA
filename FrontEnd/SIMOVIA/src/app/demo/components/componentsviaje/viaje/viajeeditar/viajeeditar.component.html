@@ -1,0 +1,309 @@
+<p-toast></p-toast>
+<div class="card">
+    <div
+        style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            height: 50px;
+        "
+    >
+        <div style="position: absolute; left: 0">
+            <button
+                (click)="cancelar()"
+                class="p-button-link"
+                pButton
+                pRipple
+                type="button"
+                label="Regresar"
+                icon="pi pi-arrow-left"
+                style="box-shadow: none !important"
+            ></button>
+        </div>
+
+        <div>
+            <h1 style="margin: 0">Editar Viaje</h1>
+        </div>
+    </div>
+
+    <hr />
+
+    <!-- <div
+        *ngIf="cargando"
+        class="flex justify-content-center align-items-center"
+        style="height: 300px"
+    >
+        <p-progressSpinner></p-progressSpinner>
+    </div> -->
+
+    <!-- <div *ngIf="!cargando"> -->
+        <form [formGroup]="viajeEditarForm">
+            <div class="grid p-fluid mt-3">
+                <div class="field col-12 md:col-6">
+                    <span class="p-float-label">
+                        <p-autoComplete
+                            inputId="acsucursal"
+                            [(ngModel)]="seleccionadoSucursal"
+                            [suggestions]="filtradoSucursales"
+                            (completeMethod)="filtroSucursal($event)"
+                            field="sucu_Descripcion"
+                            placeholder="Seleccione la sucursal."
+                            [dropdown]="true"
+                            [showClear]="true"
+                            (onClear)="limpiarSucursal()"
+                            (onSelect)="seleccionarSucursal($event)"
+                            [ngModelOptions]="{ standalone: true }"
+                            [ngClass]="{
+                                'ng-invalid ng-dirty':
+                                    enviado &&
+                                    viajeEditarForm.get('sucu_Id')
+                                        ?.invalid
+                            }"
+                        ></p-autoComplete>
+                        <label>Sucursal</label>
+                    </span>
+                    <small
+                        *ngIf="enviado && viajeEditarForm.get('sucu_Id')?.errors?.['required']"
+                        style="color: #fc6161 !important"
+                    >
+                        El campo es requerido.
+                    </small>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <span class="p-float-label">
+                        <p-calendar
+                            [showIcon]="true"
+                            formControlName="vien_Fecha"
+                            [yearRange]="anioRango"
+                            [minDate]="fechaMinima"
+                            [maxDate]="fechaMaxima"
+                            (onSelect)="seleccionarFecha($event)"
+                            [ngClass]="{
+                                'ng-invalid ng-dirty':
+                                    enviado &&
+                                    viajeEditarForm.get(
+                                        'vien_Fecha'
+                                    )?.invalid
+                            }"
+                        ></p-calendar>
+                        <label>Fecha</label>
+                    </span>
+                    <small
+                        *ngIf="
+                enviado &&
+                    viajeEditarForm.get('vien_Fecha')?.errors?.['required']
+                "
+                        style="color: #fc6161 !important"
+                    >
+                        El campo es requerido.
+                    </small>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <span class="p-float-label">
+                        <p-autoComplete
+                            inputId="acencargado"
+                            [(ngModel)]="seleccionadoTransportista"
+                            [suggestions]="filtradoTransportistas"
+                            (completeMethod)="filtroTransportista($event)"
+                            field="tran_Nombre"
+                            placeholder="Seleccione el encargado."
+                            [dropdown]="true"
+                            [showClear]="true"
+                            (onClear)="limpiarTransportista()"
+                            (onSelect)="seleccionarTransportista($event)"
+                            [ngModelOptions]="{ standalone: true }"
+                            [ngClass]="{
+                                'ng-invalid ng-dirty':
+                                    enviado &&
+                                    viajeEditarForm.get('tran_Id')
+                                        ?.invalid
+                            }"
+                        ></p-autoComplete>
+                        <label>Encargado</label>
+                    </span>
+                    <small
+                        *ngIf="enviado && viajeEditarForm.get('tran_Id')?.errors?.['required']"
+                        style="color: #fc6161 !important"
+                    >
+                        El campo es requerido.
+                    </small>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <span class="p-float-label">
+                        <input
+                        pInputText
+                        type="text"
+                        [value]="transportistaTarifa | number:'1.2-2'"
+                        disabled
+                        style="color: black;"
+                    />
+                    <label>Tarifa</label>
+                    </span>
+
+                </div>
+                <div class="field col-12 md:col-6">
+                    <span class="p-float-label">
+                        <input
+                        pInputText
+                        type="text"
+                        [value]="distanciaTotal"
+                        disabled
+                        style="color: black;"
+                    />
+                    <label>Distancia Total</label>
+                    </span>
+
+                </div>
+                <div class="field col-12 md:col-6">
+                    <span class="p-float-label">
+                        <input
+                            pInputText
+                            type="text"
+                            [value]="totalPagar | number:'1.2-2'" 
+                            disabled
+                            style="color: black;"
+                        />
+                        <label>Total a Pagar</label>
+                    </span>
+                </div>
+                
+            </div>
+            <p-table
+                #dt
+                [value]="colaboradores"
+                styleClass="mt-2"
+                responsiveLayout="scroll"
+                [(selection)]="colaboradoresSeleccionados"
+                selectionMode="multiple"
+                [rows]="10"
+                [globalFilterFields]="[
+                    'codigo',
+                    'cola_DNI',
+                    'colaborador',
+                    'cosu_Distanciakm'
+                ]"
+                [showCurrentPageReport]="true"
+                [rowsPerPageOptions]="[10, 25, 50, 100]"
+                [rowHover]="true"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+                (onRowSelect)="seleccionandoColaborador($event)"
+                (onRowUnselect)="deseleccionandoColaborador($event)"
+                (onHeaderCheckboxToggle)="seleccionandoTodosColaboradores($event)"
+            >
+                <ng-template pTemplate="caption">
+                    <div
+                        class="flex justify-content-between align-items-center"
+                    >
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input
+                                pInputText
+                                type="text"
+                                (input)="onGlobalFilter(dt, $event)"
+                                placeholder="Buscar..."
+                            />
+                        </span>
+                        <div>
+                            <p-dropdown
+                                [options]="dt.rowsPerPageOptions"
+                                [(ngModel)]="dt.rows"
+                                [style]="{ 'margin-right': '5px' }"
+                            ></p-dropdown>
+
+                            <span style="font-weight: 700; margin-top: 7px">
+                                Registros por página</span
+                            >
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th class="text-center" style="width: 10rem">
+                            <p-tableHeaderCheckbox
+                                [disabled]="!habilitarSeleccionColaboradores"
+                            ></p-tableHeaderCheckbox>
+                        </th>
+                        <th pSortableColumn="codigo" style="width: 10rem">
+                            No. <p-sortIcon field="codigo"></p-sortIcon>
+                        </th>
+                        <th
+                            class="text-center"
+                            pSortableColumn="cola_DNI" 
+                        >
+                            DNI
+                            <p-sortIcon field="cola_DNI"></p-sortIcon>
+                        </th>
+                        <th class="text-center" pSortableColumn="colaborador" >
+                            Colaborador
+                            <p-sortIcon field="colaborador"></p-sortIcon>
+                        </th>
+                        <th
+                            class="text-center"
+                            pSortableColumn="cosu_Distanciakm" 
+                        >
+                            Distancia KM
+                            <p-sortIcon field="cosu_Distanciakm"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-colaborador>
+                    <tr>
+                        <td class="text-center">
+                            <p-tableCheckbox
+                                [value]="colaborador"
+                                [disabled]="!habilitarSeleccionColaboradores || colaborador['deshabilitado']"
+                            ></p-tableCheckbox>
+                        </td>
+                        <td>{{ colaborador.codigo }}</td>
+                        <td>{{ colaborador.cola_DNI }}</td>
+                        <td>{{ colaborador.colaborador }}</td>
+                        <td class="text-center">{{ colaborador.cosu_Distanciakm }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <div class="flex justify-content-end align-items-center mt-4">
+                <div class="summary-container">
+                    <div class="summary-item">
+                        <span class="label"><b>Total a Pagar:</b></span>
+                        <span class="value">LPS {{ totalPagar | number:'1.2-2' }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div
+                style="
+                    display: flex;
+                    justify-content: end;
+                    align-items: center;
+                    margin-top: 15px;
+                "
+            >
+
+                <div style="display: flex; gap: 1rem">
+                    <button
+                        class="p-button-secondary"
+                        pButton
+                        pRipple
+                        type="button"
+                        label="Guardar"
+                        icon="pi pi-save"
+                        style="width: auto; padding: 0.5rem 1rem"
+                        (click)="actualizar()"
+                    ></button>
+                    <button
+                        class="btn btn-guardar"
+                        pButton
+                        pRipple
+                        type="button"
+                        label="Cancelar"
+                        icon="pi pi-times"
+                        style="width: auto; padding: 0.5rem 1rem"
+                        (click)="cancelar()"
+                    ></button>
+                </div>
+            </div>
+        </form>
+    <!-- </div> -->
+
+</div>

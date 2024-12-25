@@ -13,7 +13,13 @@ namespace SIMOVIA.Entities.Entities
             tbViajesDetalle = new HashSet<tbViajesDetalle>();
         }
 
+        //LISTAR
+        public string codigo { get; set; }
+        public string transportista { get; set; }
+        public string sucursal { get; set; }
+
         public int vien_Id { get; set; }
+        public DateTime vien_Fecha { get; set; }
         public int vien_DistanciaTotalkm { get; set; }
         public decimal vien_TarifaTransportista { get; set; }
         public decimal vien_Total { get; set; }

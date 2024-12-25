@@ -1,4 +1,5 @@
 <p-toast></p-toast>
+
 <div class="card">
     <div
         style="
@@ -23,453 +24,592 @@
         </div>
 
         <div>
-            <h1 style="margin: 0">Editar Colaborador</h1>
+            <h2 style="margin: 0">Editar Colaborador</h2>
         </div>
     </div>
-
-    <hr />
-
-    <form [formGroup]="colaboradorEditarForm">
-        <div class="grid p-fluid mt-3">
-            <div class="field col-12 md:col-6">
-                <span class="p-float-label">
-                    <input
-                        (keydown)="ValidarNumeros($event)"
-                        (input)="
-                            permitirSoloNumeros($event);
-                            dniYaRegistrado = false
-                        "
-                        maxlength="13"
-                        minlength="13"
-                        type="text"
-                        pInputText
-                        formControlName="cola_DNI"
-                        [ngClass]="{
-                            'ng-dirty ng-invalid':
-                                (enviado &&
-                                    colaboradorEditarForm.get('cola_DNI')
-                                        ?.invalid) ||
-                                dniYaRegistrado
-                        }"
-                    />
-                    <label>Número de Identidad</label>
-                </span>
-                <small
-                    class="ng-dirty ng-invalid"
-                    *ngIf="
-                        enviado &&
+    <div *ngIf="cargando; else contenidoTabs" class="flex justify-content-center align-items-center" style="height: 300px;">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+    <ng-template #contenidoTabs>
+    <p-tabView [(activeIndex)]="IndexTab" class="custom-tabview">
+        <p-tabPanel header="Personal">
+            <form [formGroup]="colaboradorEditarForm">
+                <div class="grid p-fluid mt-3">
+                    <div class="field col-12 md:col-6">
+                        <span class="p-float-label">
+                            <input
+                                (keydown)="ValidarNumeros($event)"
+                                (input)="
+                                    permitirSoloNumeros($event);
+                                    dniYaRegistrado = false
+                                "
+                                maxlength="13"
+                                type="text"
+                                pInputText
+                                formControlName="cola_DNI"
+                                [ngClass]="{
+                                    'ng-dirty ng-invalid':
+                                        (enviadoPersonal &&
+                                            colaboradorEditarForm.get(
+                                                'cola_DNI'
+                                            )?.invalid) ||
+                                        dniYaRegistrado
+                                }"
+                            />
+                            <label>Número de Identidad</label>
+                        </span>
+                        <small
+                            class="ng-dirty ng-invalid"
+                            *ngIf="
+                        enviadoPersonal &&
                         colaboradorEditarForm.get('cola_DNI')?.errors?.['required']
                     "
-                    style="color: #FC6161 !important"
-                >
-                    El campo es requerido.
-                </small>
-                <!-- Mensaje de longitud -->
-                <small
-                    *ngIf="
-                         enviado &&
+                            style="color: #fc6161 !important"
+                        >
+                            El campo es requerido.
+                        </small>
+                        <small
+                            *ngIf="
+                         enviadoPersonal &&
                          (colaboradorEditarForm.get('cola_DNI')?.errors?.['minlength'] ||
                              colaboradorEditarForm.get('cola_DNI')?.errors?.['maxlength'])
                      "
-                    style="color: #FC6161 !important"
-                >
-                    La identidad debe ser de 13 dígitos.
-                </small>
-                <!-- Mensaje de DNI ya registrado -->
-                <small
-                    class="ng-dirty ng-invalid"
-                    *ngIf="dniYaRegistrado"
-                    style="color: #FC6161 !important"
-                >
-                    Número de Identidad existente.
-                </small>
-            </div>
-            <div class="field col-12 md:col-6">
-                <span class="p-float-label">
-                    <input
-                        type="text"
-                        pInputText
-                        formControlName="cola_CorreoElectronico"
-                        (keydown)="ValidarCorreo($event)"
-                        maxlength="60"
-                        (input)="
-                            permitirFormatoCorreo($event);
-                            correoYaRegistrado = false
-                        "
-                        [ngClass]="{
-                            ' ng-invalid ng-dirty':
-                                (enviado &&
-                                    colaboradorEditarForm.get(
-                                        'cola_CorreoElectronico'
-                                    )?.invalid) ||
-                                correoYaRegistrado
-                        }"
-                    />
-                    <label>Correo Electrónico</label>
-                </span>
-                <!-- Mensaje de campo requerido -->
-                <small
-                    *ngIf="
-                        enviado &&
+                            style="color: #fc6161 !important"
+                        >
+                            La identidad debe ser de 13 dígitos.
+                        </small>
+                        <small
+                            class="ng-dirty ng-invalid"
+                            *ngIf="dniYaRegistrado"
+                            style="color: #fc6161 !important"
+                        >
+                            Número de Identidad existente.
+                        </small>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <span class="p-float-label">
+                            <input
+                                type="text"
+                                pInputText
+                                formControlName="cola_CorreoElectronico"
+                                maxlength="60"
+                                (input)="
+                                    permitirFormatoCorreo($event);
+                                    correoYaRegistrado = false
+                                "
+                                [ngClass]="{
+                                    ' ng-dirty ng-invalid':
+                                        (enviadoPersonal &&
+                                            colaboradorEditarForm.get(
+                                                'cola_CorreoElectronico'
+                                            )?.invalid) ||
+                                        correoYaRegistrado
+                                }"
+                            />
+                            <label>Correo Electrónico</label>
+                        </span>
+                        <small
+                            *ngIf="
+                        enviadoPersonal &&
                         colaboradorEditarForm.get('cola_CorreoElectronico')?.errors?.['required']
                     "
-                    style="color: #FC6161 !important"
-                >
-                    El campo es requerido.
-                </small>
-                <!-- Mensaje de correo no válido -->
-                <small
-                    *ngIf="
-                        enviado &&
+                            style="color: #fc6161 !important"
+                        >
+                            El campo es requerido.
+                        </small>
+                        <small
+                            *ngIf="
+                        enviadoPersonal &&
                         colaboradorEditarForm.get('cola_CorreoElectronico')?.errors?.['pattern']
                     "
-                    style="color: #FC6161 !important"
-                >
-                    Ingresa un correo electrónico válido.
-                </small>
-                <!-- Mensaje de correo ya registrado -->
-                <small
-                    class="ng-dirty ng-invalid"
-                    *ngIf="correoYaRegistrado"
-                    style="color: #FC6161 !important"
-                >
-                    Correo electrónico existente.
-                </small>
-            </div>
-            <div class="field col-12 md:col-6">
-                <span class="p-float-label p-input-icon-left">
-                    <i class="pi pi-user-edit"></i>
-                    <input
-                        (keydown)="ValidarTexto($event)"
-                        (input)="permitirSoloLetras($event)"
-                        maxlength="80"
-                        placeholder="Ingrese su primer y segundo nombre."
-                        type="text"
-                        pInputText
-                        formControlName="cola_Nombres"
-                        [ngClass]="{
-                            ' ng-invalid ng-dirty':
-                                enviado &&
+                            style="color: #fc6161 !important"
+                        >
+                            Ingresa un correo electrónico válido.
+                        </small>
+                        <small
+                            class="ng-dirty ng-invalid"
+                            *ngIf="correoYaRegistrado"
+                            style="color: #fc6161 !important"
+                        >
+                            Correo electrónico existente.
+                        </small>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <span class="p-float-label">
+                            <input
+                                (keydown)="ValidarTexto($event)"
+                                (input)="permitirSoloLetras($event)"
+                                maxlength="80"
+                                placeholder="Ingrese su primer y segundo nombre."
+                                type="text"
+                                pInputText
+                                formControlName="cola_Nombres"
+                                [ngClass]="{
+                                    ' ng-invalid ng-dirty':
+                                        enviadoPersonal &&
+                                        colaboradorEditarForm.get(
+                                            'cola_Nombres'
+                                        )?.invalid
+                                }"
+                            />
+                            <label>Nombres</label>
+                        </span>
+                        <small
+                            class="ng-dirty ng-invalid"
+                            *ngIf="
+                                enviadoPersonal &&
                                 colaboradorEditarForm.get('cola_Nombres')
                                     ?.invalid
-                        }"
-                    />
-                    <label>Nombres</label>
-                </span>
-                <small
-                    class="ng-dirty ng-invalid"
-                    *ngIf="
-                        enviado &&
-                        colaboradorEditarForm.get('cola_Nombres')?.invalid
-                    "
-                    style="color: #FC6161 !important"
-                >
-                    El campo es requerido.
-                </small>
-            </div>
-            <div class="field col-12 md:col-6">
-                <span class="p-float-label p-input-icon-left">
-                    <i class="pi pi-user-edit"></i>
-                    <input
-                        (keydown)="ValidarTexto($event)"
-                        (input)="permitirSoloLetras($event)"
-                        maxlength="80"
-                        type="text"
-                        pInputText
-                        formControlName="cola_Apellidos"
-                        [ngClass]="{
-                            ' ng-invalid ng-dirty':
-                                enviado &&
-                                colaboradorEditarForm.get(
-                                    'cola_Apellidos'
-                                )?.invalid
-                        }"
-                    />
-                    <label>Apellidos</label>
-                </span>
-                <small
-                    class="ng-dirty ng-invalid"
-                    *ngIf="
-                        enviado &&
-                        colaboradorEditarForm.get('cola_Apellidos')
-                            ?.invalid
-                    "
-                    style="color: #FC6161 !important"
-                >
-                    El campo es requerido.
-                </small>
-            </div>
-            <div class="field col-12 md:col-6">
-                <span class="p-float-label">
-                    <p-calendar
-                        [showIcon]="true"
-                        formControlName="cola_FechaNacimiento"
-                        [defaultDate]="fechaPorDefecto"
-                        [yearRange]="anioRango"
-                        [minDate]="fechaMinima"
-                        [maxDate]="fechaMaxima"
-                        [ngClass]="{
-                            'ng-invalid ng-dirty': enviado && colaboradorEditarForm.get('cola_FechaNacimiento')?.invalid
-                        }"
-                    ></p-calendar>
-                    <label>Fecha de Nacimiento</label>
-                </span>
-                <small
-                    *ngIf="
-                    enviado &&
+                            "
+                            style="color: #fc6161 !important"
+                        >
+                            El campo es requerido.
+                        </small>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <span class="p-float-label">
+                            <input
+                                (keydown)="ValidarTexto($event)"
+                                (input)="permitirSoloLetras($event)"
+                                maxlength="80"
+                                type="text"
+                                pInputText
+                                formControlName="cola_Apellidos"
+                                [ngClass]="{
+                                    ' ng-invalid ng-dirty':
+                                        enviadoPersonal &&
+                                        colaboradorEditarForm.get(
+                                            'cola_Apellidos'
+                                        )?.invalid
+                                }"
+                            />
+                            <label>Apellidos</label>
+                        </span>
+                        <small
+                            class="ng-dirty ng-invalid"
+                            *ngIf="
+                                enviadoPersonal &&
+                                colaboradorEditarForm.get('cola_Apellidos')
+                                    ?.invalid
+                            "
+                            style="color: #fc6161 !important"
+                        >
+                            El campo es requerido.
+                        </small>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <span class="p-float-label">
+                            <p-calendar
+                                [showIcon]="true"
+                                formControlName="cola_FechaNacimiento"
+                                [yearRange]="anioRango"
+                                [minDate]="fechaMinima"
+                                [maxDate]="fechaMaxima"
+                                [ngClass]="{
+                                    'ng-invalid ng-dirty':
+                                        enviadoPersonal &&
+                                        colaboradorEditarForm.get(
+                                            'cola_FechaNacimiento'
+                                        )?.invalid
+                                }"
+                            ></p-calendar>
+                            <label>Fecha de Nacimiento</label>
+                        </span>
+                        <small
+                            *ngIf="
+                    enviadoPersonal &&
                         colaboradorEditarForm.get('cola_FechaNacimiento')?.errors?.['required']
                     "
-                    style="color: #FC6161 !important"
-                >
-                    El campo es requerido.
-                </small>
-            </div>
-            <div class="field col-12 md:col-6">
-                <span class="p-float-label p-input-icon-left">
-                    <i class="pi pi-phone"></i>
-                    <input
-                        (keydown)="ValidarNumeros($event)"
-                        (input)="permitirSoloNumeros($event)"
-                        maxlength="8"
-                        minlength="8"
-                        type="text"
-                        formControlName="cola_Telefono"
-                        pInputText
-                        [ngClass]="{
-                            ' ng-invalid ng-dirty':
-                                enviado &&
-                                colaboradorEditarForm.get(
-                                    'cola_Telefono'
-                                )?.invalid
-                        }"
-                    />
-                    <label>Teléfono</label>
-                </span>
-                <small
-                    class="ng-dirty ng-invalid"
-                    *ngIf="
-                        enviado &&
-                        colaboradorEditarForm.get('cola_Telefono')
-                            ?.invalid
-                    "
-                    style="color: #FC6161 !important"
-                >
-                    El campo es requerido.
-                </small>
-                <!-- Mensaje de longitud -->
-                <small
-                    *ngIf="
-                         enviado &&
+                            style="color: #fc6161 !important"
+                        >
+                            El campo es requerido.
+                        </small>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <span class="p-float-label">
+                            <input
+                                (keydown)="ValidarNumeros($event)"
+                                (input)="permitirSoloNumeros($event)"
+                                maxlength="8"
+                                type="text"
+                                formControlName="cola_Telefono"
+                                pInputText
+                                [ngClass]="{
+                                    ' ng-invalid ng-dirty':
+                                        enviadoPersonal &&
+                                        colaboradorEditarForm.get(
+                                            'cola_Telefono'
+                                        )?.invalid
+                                }"
+                            />
+                            <label>Teléfono</label>
+                        </span>
+                        <small
+                            class="ng-dirty ng-invalid"
+                            *ngIf="
+                                enviadoPersonal &&
+                                colaboradorEditarForm.get('cola_Telefono')
+                                    ?.invalid
+                            "
+                            style="color: #fc6161 !important"
+                        >
+                            El campo es requerido.
+                        </small>
+                        <!-- Mensaje de longitud -->
+                        <small
+                            *ngIf="
+                         enviadoPersonal &&
                          (colaboradorEditarForm.get('cola_Telefono')?.errors?.['minlength'] ||
                              colaboradorEditarForm.get('cola_Telefono')?.errors?.['maxlength'])
                      "
-                    style="color: #FC6161 !important"
-                >
-                    El teléfono debe ser de 8 dígitos.
-                </small>
-            </div>
-            <div class="field col-12 md:col-6">
-                <span class="p-float-label">
-                    <p-autoComplete
-                        inputId="accargo"
-                        [(ngModel)]="seleccionadoCargo"
-                        [suggestions]="filtradoCargos"
-                        (completeMethod)="
-                            filtroCargo($event)
-                        "
-                        field="carg_Descripcion"
-                        placeholder="Seleccione el cargo."
-                        [dropdown]="true"
-                        [showClear]="true"
-                        (onClear)="limpiarCargo()"
-                        (onSelect)="
-                            colaboradorEditarForm.controls[
-                                'carg_Id'
-                            ].setValue(
-                                seleccionadoCargo?.carg_Id
-                            )
-                        "
-                        [ngModelOptions]="{ standalone: true }"
-                        [ngClass]="{
-                            'ng-invalid ng-dirty': enviado && colaboradorEditarForm.get('carg_Id')?.invalid
-                        }"
-                    ></p-autoComplete>
-                    <label>Cargo</label>
-                </span>
-                <small
-                    *ngIf="enviado && colaboradorEditarForm.get('civi_Id')?.errors?.['required']"
-                    style="color: #FC6161 !important"
-                >
-                    El campo es requerido.
-                </small>
-            </div>
-            <div class="field col-12 md:col-6">
-                <span class="p-float-label">
-                    <p-autoComplete
-                        [suggestions]="
-                            filtradoDepartamentos
-                        "
-                        (completeMethod)="
-                            filtroDepartamento(
-                                $event
-                            )
-                        "
-                        placeholder="Seleccione su departamento."
-                        field="depa_Descripcion"
-                        [dropdown]="true"
-                        [showClear]="true"
-                        (onClear)="
-                            limpiarDepartamento()
-                        "
-                        (onSelect)="
-                            seleccionandoDepartamento(
-                                $event
-                            )
-                        "
-                        [ngClass]="{'ng-invalid ng-dirty': enviado && !seleccionadoDepartamento}"
-                    >
-                    </p-autoComplete>
-                    <label>Departamento</label>
-                </span>
-                <small
-                    *ngIf="
-                        enviado &&
-                        !seleccionadoDepartamento
-                    "
-                    style="color: #FC6161 !important"
-                >
-                    El campo es requerido.
-                </small>
-            </div>
-            <div class="field col-12 md:col-6">
-                <span class="p-float-label">
-                    <p-autoComplete
-                        [(ngModel)]="
-                            seleccionadoMunicipio
-                        "
-                        [suggestions]="
-                            filtradoMunicipios
-                        "
-                        placeholder="Seleccione su municipio."
-                        (completeMethod)="
-                            filtroMunicipio($event)
-                        "
-                        field="muni_Descripcion"
-                        [dropdown]="true"
-                        [showClear]="true"
-                        (onClear)="
-                            limpiarMunicipio()
-                        "
-                        [disabled]="
-                            municipios.length === 0
-                        "
-                        (onSelect)="
-                            colaboradorEditarForm.controls[
-                                'muni_Id'
-                            ].setValue(
-                                seleccionadoMunicipio?.muni_Id
-                            )
-                        "
-                        [ngModelOptions]="{
-                            standalone: true
-                        }"
-                        [ngClass]="{
-                            'ng-invalid ng-dirty': enviado && colaboradorEditarForm.get('muni_Id')?.invalid
-                        }"
-                    >
-                    </p-autoComplete>
-                    <label>Municipio</label>
-                </span>
-                <small
-                    *ngIf="enviado && colaboradorEditarForm.get('muni_Id')?.errors?.['required']"
-                    style="color: #FC6161 !important"
-                >
-                    El campo es requerido.
-                </small>
-            </div>
-            <div class="field col-12 md:col-6">
-                <span class="p-float-label">
-                    <p-autoComplete
-                        inputId="acestado"
-                        [(ngModel)]="seleccionadoEstadoCivil"
-                        [suggestions]="filtradoEstadosCiviles"
-                        (completeMethod)="
-                            filtroEstadoCivil($event)
-                        "
-                        field="civi_Descripcion"
-                        placeholder="Seleccione su estado civil."
-                        [dropdown]="true"
-                        [showClear]="true"
-                        (onClear)="limpiarEstadoCivil()"
-                        (onSelect)="
-                            colaboradorEditarForm.controls[
-                                'civi_Id'
-                            ].setValue(
-                                seleccionadoEstadoCivil?.civi_Id
-                            )
-                        "
-                        [ngModelOptions]="{ standalone: true }"
-                        [ngClass]="{
-                            'ng-invalid ng-dirty': enviado && colaboradorEditarForm.get('civi_Id')?.invalid
-                        }"
-                    ></p-autoComplete>
-                    <label>Estado Civil</label>
-                </span>
-                <small
-                    *ngIf="enviado && colaboradorEditarForm.get('civi_Id')?.errors?.['required']"
-                    style="color: #FC6161 !important"
-                >
-                    El campo es requerido.
-                </small>
-            </div>
-            <div class="field col-12 md:col-6">
-                <label>Sexo</label>
-                <div class="grid formgrid">
-                    <div class="col-12 md:col-6">
-                        <div class="field-radiobutton">
-                            <p-radioButton
-                                name="cola_Sexo"
-                                value="F"
-                                id="F"
-                                formControlName="cola_Sexo"
-                            ></p-radioButton>
-                            <label>Femenino</label>
-                        </div>
+                            style="color: #fc6161 !important"
+                        >
+                            El teléfono debe ser de 8 dígitos.
+                        </small>
                     </div>
-                    <div class="col-12 md:col-6">
-                        <div class="field-radiobutton">
-                            <p-radioButton
-                                name="cola_Sexo"
-                                value="M"
-                                id="M"
-                                formControlName="cola_Sexo"
-                            ></p-radioButton>
-                            <label>Masculino</label>
+                    <div class="field col-12 md:col-6">
+                        <span class="p-float-label">
+                            <p-autoComplete
+                                inputId="accargo"
+                                [(ngModel)]="seleccionadoCargo"
+                                [suggestions]="filtradoCargos"
+                                (completeMethod)="filtroCargo($event)"
+                                field="carg_Descripcion"
+                                placeholder="Seleccione el cargo."
+                                [dropdown]="true"
+                                [showClear]="true"
+                                (onClear)="limpiarCargo()"
+                                (onSelect)="
+                                    colaboradorEditarForm.controls[
+                                        'carg_Id'
+                                    ].setValue(seleccionadoCargo?.carg_Id)
+                                "
+                                [ngModelOptions]="{ standalone: true }"
+                                [ngClass]="{
+                                    'ng-invalid ng-dirty':
+                                        enviadoPersonal &&
+                                        colaboradorEditarForm.get('carg_Id')
+                                            ?.invalid
+                                }"
+                            ></p-autoComplete>
+                            <label>Cargo</label>
+                        </span>
+                        <small
+                            *ngIf="enviadoPersonal && colaboradorEditarForm.get('civi_Id')?.errors?.['required']"
+                            style="color: #fc6161 !important"
+                        >
+                            El campo es requerido.
+                        </small>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <span class="p-float-label">
+                            <p-autoComplete
+                                [(ngModel)]="seleccionadoDepartamento"
+                                [ngModelOptions]="{ standalone: true }"
+                                [suggestions]="filtradoDepartamentos"
+                                (completeMethod)="filtroDepartamento($event)"
+                                placeholder="Seleccione su departamento."
+                                field="depa_Descripcion"
+                                [dropdown]="true"
+                                [showClear]="true"
+                                (onClear)="limpiarDepartamento()"
+                                (onSelect)="seleccionandoDepartamento($event)"
+                                [ngClass]="{
+                                    'ng-invalid ng-dirty':
+                                        enviadoPersonal &&
+                                        !seleccionadoDepartamento
+                                }"
+                            >
+                            </p-autoComplete>
+                            <label>Departamento</label>
+                        </span>
+                        <small
+                            *ngIf="enviadoPersonal && !seleccionadoDepartamento"
+                            style="color: #fc6161 !important"
+                        >
+                            El campo es requerido.
+                        </small>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <span class="p-float-label">
+                            <p-autoComplete
+                                [(ngModel)]="seleccionadoMunicipio"
+                                [suggestions]="filtradoMunicipios"
+                                placeholder="Seleccione su municipio."
+                                (completeMethod)="filtroMunicipio($event)"
+                                field="muni_Descripcion"
+                                [dropdown]="true"
+                                [showClear]="true"
+                                (onClear)="limpiarMunicipio()"
+                                [disabled]="municipios.length === 0"
+                                (onSelect)="
+                                    colaboradorEditarForm.controls[
+                                        'muni_Id'
+                                    ].setValue(seleccionadoMunicipio?.muni_Id)
+                                "
+                                [ngModelOptions]="{
+                                    standalone: true
+                                }"
+                                [ngClass]="{
+                                    'ng-invalid ng-dirty':
+                                        enviadoPersonal &&
+                                        colaboradorEditarForm.get('muni_Id')
+                                            ?.invalid
+                                }"
+                            >
+                            </p-autoComplete>
+                            <label>Municipio</label>
+                        </span>
+                        <small
+                            *ngIf="enviadoPersonal && colaboradorEditarForm.get('muni_Id')?.errors?.['required']"
+                            style="color: #fc6161 !important"
+                        >
+                            El campo es requerido.
+                        </small>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <span class="p-float-label">
+                            <p-autoComplete
+                                inputId="acestado"
+                                [(ngModel)]="seleccionadoEstadoCivil"
+                                [suggestions]="filtradoEstadosCiviles"
+                                (completeMethod)="filtroEstadoCivil($event)"
+                                field="civi_Descripcion"
+                                placeholder="Seleccione su estado civil."
+                                [dropdown]="true"
+                                [showClear]="true"
+                                (onClear)="limpiarEstadoCivil()"
+                                (onSelect)="
+                                    colaboradorEditarForm.controls[
+                                        'civi_Id'
+                                    ].setValue(seleccionadoEstadoCivil?.civi_Id)
+                                "
+                                [ngModelOptions]="{ standalone: true }"
+                                [ngClass]="{
+                                    'ng-invalid ng-dirty':
+                                        enviadoPersonal &&
+                                        colaboradorEditarForm.get('civi_Id')
+                                            ?.invalid
+                                }"
+                            ></p-autoComplete>
+                            <label>Estado Civil</label>
+                        </span>
+                        <small
+                            *ngIf="enviadoPersonal && colaboradorEditarForm.get('civi_Id')?.errors?.['required']"
+                            style="color: #fc6161 !important"
+                        >
+                            El campo es requerido.
+                        </small>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <label>Sexo</label>
+                        <div class="grid formgrid">
+                            <div class="col-12 md:col-6">
+                                <div class="field-radiobutton">
+                                    <p-radioButton
+                                        name="cola_Sexo"
+                                        value="F"
+                                        id="F"
+                                        formControlName="cola_Sexo"
+                                    ></p-radioButton>
+                                    <label>Femenino</label>
+                                </div>
+                            </div>
+                            <div class="col-12 md:col-6">
+                                <div class="field-radiobutton">
+                                    <p-radioButton
+                                        name="cola_Sexo"
+                                        value="M"
+                                        id="M"
+                                        formControlName="cola_Sexo"
+                                    ></p-radioButton>
+                                    <label>Masculino</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <div
+                    style="
+                        display: flex;
+                        justify-content: end;
+                        margin-top: 15px;
+                    "
+                >
+                    <button
+                        pButton
+                        pRipple
+                        label="Siguiente"
+                        class="p-element p-ripple p-button-outlined p-button p-component"
+                        icon="pi pi-chevron-right"
+                        iconPos="right"
+                        (click)="siguiente()"
+                    ></button>
+                </div>
+            </form>
+        </p-tabPanel>
+        <p-tabPanel header="Sucursal" [disabled]="!validarCamposPersonales()">
+            <h3>Sucursales</h3>
+            <p-table
+                #dt
+                [value]="sucursales"
+                styleClass="mt-2"
+                responsiveLayout="scroll"
+                [(selection)]="sucursalesSeleccionadas"
+                selectionMode="multiple"
+                [rows]="10"
+                [globalFilterFields]="[
+                    'codigo',
+                    'sucu_Descripcion',
+                    'sucu_Telefono',
+                    'muni_Descripcion'
+                ]"
+                [showCurrentPageReport]="true"
+                [rowsPerPageOptions]="[10, 25, 50, 100]"
+                [rowHover]="true"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+                (onRowSelect)="seleccionandoSucursal($event)"
+                (onRowUnselect)="deseleccionandoSucursal($event)"
+                (onHeaderCheckboxToggle)="seleccionandoTodasSucursales($event)"
+            >
+                <ng-template pTemplate="caption">
+                    <div
+                        class="flex justify-content-between align-items-center"
+                    >
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input
+                                pInputText
+                                type="text"
+                                (input)="onGlobalFilter(dt, $event)"
+                                placeholder="Buscar..."
+                            />
+                        </span>
+                        <div>
+                            <p-dropdown
+                                [options]="dt.rowsPerPageOptions"
+                                [(ngModel)]="dt.rows"
+                                [style]="{ 'margin-right': '5px' }"
+                            ></p-dropdown>
+
+                            <span style="font-weight: 700; margin-top: 7px">
+                                Registros por página</span
+                            >
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th class="text-center" style="width: 8rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th class="text-center">Distancia</th>
+                        <th pSortableColumn="codigo">
+                            No. <p-sortIcon field="codigo"></p-sortIcon>
+                        </th>
+                        <th
+                            class="text-center"
+                            pSortableColumn="sucu_Descripcion"
+                        >
+                            Sucursal
+                            <p-sortIcon field="sucu_Descripcion"></p-sortIcon>
+                        </th>
+                        <th class="text-center" pSortableColumn="sucu_Telefono">
+                            Teléfono
+                            <p-sortIcon field="sucu_Telefono"></p-sortIcon>
+                        </th>
+                        <th
+                            class="text-center"
+                            pSortableColumn="muni_Descripcion"
+                        >
+                            Municipio
+                            <p-sortIcon field="muni_Descripcion"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-sucursal>
+                    <tr>
+                        <td class="text-center">
+                            <p-tableCheckbox
+                                [value]="sucursal"
+                            ></p-tableCheckbox>
+                        </td>
+                        <td>
+                            <div style="display: flex; flex-direction: column; align-items: start;">
+                                <input
+                                    (keydown)="ValidarNumeros($event)"
+                                    (input)="permitirSoloNumeros($event)"
+                                    (blur)="validarDistancia(sucursal)"
+                                    maxlength="2"
+                                    pInputText
+                                    type="text"
+                                    [(ngModel)]="sucursal.distancia"
+                                    [disabled]="!sucursal.habilitado"
+                                    placeholder="KM"
+                                    [ngClass]="{
+                                        'ng-invalid ng-dirty': sucursal.error
+                                    }"
+                                />
+                                <small
+                                    *ngIf="sucursal.error"
+                                    style="color: #fc6161; font-size: 12px; margin-top: 4px;"
+                                >
+                                    {{ sucursal.error }}
+                                </small>
+                            </div>
+                        </td>
+                        
+                        <td>{{ sucursal.codigo }}</td>
+                        <td>{{ sucursal.sucu_Descripcion }}</td>
+                        <td>{{ sucursal.sucu_Telefono }}</td>
+                        <td>{{ sucursal.muni_Descripcion }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <div
+                style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-top: 15px;
+                "
+            >
+                <button
+                    class="p-element p-ripple p-button-outlined p-button p-component"
+                    pButton
+                    pRipple
+                    type="button"
+                    label="Anterior"
+                    icon="pi pi-arrow-left"
+                    style="width: auto; padding: 0.5rem 1rem"
+                    (click)="anterior()"
+                ></button>
+
+                <div style="display: flex; gap: 1rem">
+                    <button
+                        class="p-button-secondary"
+                        pButton
+                        pRipple
+                        type="button"
+                        label="Guardar"
+                        icon="pi pi-save"
+                        style="width: auto; padding: 0.5rem 1rem"
+                        (click)="actualizar()"
+                    ></button>
+                    <button
+                        class="btn btn-guardar"
+                        pButton
+                        pRipple
+                        type="button"
+                        label="Cancelar"
+                        icon="pi pi-times"
+                        style="width: auto; padding: 0.5rem 1rem"
+                        (click)="cancelar()"
+                    ></button>
+                </div>
             </div>
-        </div>
-        <div style="display: flex; justify-content: end; margin-top: 15px">
-            <button
-                class="btn btn-guardar"
-                pButton
-                pRipple
-                type="button"
-                label="Guardar"
-                icon="pi pi-save"
-                (click)="actualizar()"
-            ></button>
-            <button
-                style="margin-left: 2%"
-                class="p-button-secondary"
-                pButton
-                pRipple
-                type="button"
-                label="Cancelar"
-                icon="pi pi-times"
-                (click)="cancelar()"
-            ></button>
-        </div>
-    </form>
+        </p-tabPanel>
+    </p-tabView>
+</ng-template>
 </div>

@@ -3,7 +3,6 @@ export class colaborador {
     colaborador?: string;
     cola_Id?: number;                
     cola_DNI?: string;             
-    cola_Imagen?: string;          
     cola_Nombres?: string;          
     cola_Apellidos?: string;          
     cola_CorreoElectronico?: string; 
@@ -17,4 +16,7 @@ export class colaborador {
     carg_Id?: number;    
     cola_UsuarioCreacion?: number;    
     cola_UsuarioModificacion?: number; 
+
+    //
+    cosu_Distanciakm?:number;
 }

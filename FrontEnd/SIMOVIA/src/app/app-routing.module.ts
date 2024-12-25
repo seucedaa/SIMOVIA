@@ -13,8 +13,8 @@ import { AppLayoutComponent } from "./layout/app.layout.component";
                 path: '', component: AppLayoutComponent,
                 children: [
                     { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
-                    { path: 'uikit', loadChildren: () => import('./demo/components/uikit/uikit.module').then(m => m.UIkitModule) },
-                    { path: 'general', loadChildren: () => import('./demo/components/componentsgeneral/general.module').then(m => m.GeneralModule) }
+                    { path: 'general', loadChildren: () => import('./demo/components/componentsgeneral/general.module').then(m => m.GeneralModule) },
+                    { path: 'viaje', loadChildren: () => import('./demo/components/componentsviaje/viaje.module').then(m => m.ViajeModule) }
                 ]
             },
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },

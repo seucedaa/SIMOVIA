@@ -64,7 +64,7 @@ namespace SIMOVIA.BusinessLogic.Services.ServicesGeneral
                 else if (map.CodeStatus == -2)
                     return result.Warning("DNI existente."); 
                 else if (map.CodeStatus == -3)
-                    return result.Warning("Correo electrónico existente.");
+                    return result.Warning("Correo existente.");
                 else
                     return result.Error();
             }
@@ -90,6 +90,64 @@ namespace SIMOVIA.BusinessLogic.Services.ServicesGeneral
             {
                 var map = _colaboradorRepository.Find(id);
                 return result.Ok(map);
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Actualiza un colaborador en la base de datos.
+        /// </summary>
+        /// <param name="item">El objeto `tbColaboradores` que contiene los datos del colaborador.</param>
+        /// <returns>
+        /// Un objeto `ServiceResult` que indica el resultado de la operación:
+        /// - Result = Success si la actualización fue exitosa.
+        /// - Result = Error si ocurrió un error.
+        /// </returns>
+        public ServiceResult Actualizar(tbColaboradores item)
+        {
+            var result = new ServiceResult();
+
+            try
+            {
+                var map = _colaboradorRepository.Update(item);
+
+                if (map.CodeStatus == 1)
+                    return result.Ok(map);
+                else
+                    return result.Error();
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Deshabilita un rol específico en la base de datos.
+        /// </summary>
+        /// <param name="id">El ID de la relación a eliminar.</param>
+        /// <returns>Un objeto ServiceResult que indica el resultado de la operación.</returns>
+        public ServiceResult Eliminar(int id)
+        {
+            var result = new ServiceResult();
+
+            try
+            {
+                var response = _colaboradorRepository.Delete(id);
+
+                var map = _colaboradorRepository.Delete(id);
+
+                if (map.CodeStatus == 1)
+                {
+                    return result.Ok(map);
+                }
+                else
+                {
+                    return result.Error(map);
+                }
             }
             catch (Exception ex)
             {

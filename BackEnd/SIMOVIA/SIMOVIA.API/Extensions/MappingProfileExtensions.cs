@@ -16,11 +16,17 @@ namespace SIMOVIA.API.Extensions
         public MappingProfileExtensions()
         {
             #region Acceso
-              CreateMap<UsuarioViewModel, tbUsuarios>().ReverseMap();
+            CreateMap<UsuarioViewModel, tbUsuarios>().ReverseMap();
             #endregion
             
             #region General
-              CreateMap<ColaboradorViewModel, tbColaboradores>().ReverseMap();
+            CreateMap<ColaboradorViewModel, tbColaboradores>().ReverseMap();
+            #endregion
+
+            #region Viaje
+            CreateMap<ColaboradorPorSucursalViewModel, tbColaboradoresPorSucursal>().ReverseMap();
+            CreateMap<ViajeEncabezadoViewModel, tbViajesEncabezado>().ReverseMap();
+            CreateMap<ViajeDetalleViewModel, tbViajesDetalle>().ReverseMap();
             #endregion
         }
 

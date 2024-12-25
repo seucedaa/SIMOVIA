@@ -20,11 +20,14 @@ export class AppMenuComponent implements OnInit {
                 ]
             },
             {
-                label: 'UI Components',
                 items: [
-                    { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
-                    { label: 'Tree', icon: 'pi pi-fw pi-share-alt', routerLink: ['/uikit/tree'] },
-                    { label: 'Overlay', icon: 'pi pi-fw pi-clone', routerLink: ['/uikit/overlay'] },
+                    {
+                        label: 'Viajes',
+                        icon: 'pi pi-fw pi-id-card',
+                        routerLink: ['/viaje/viaje'],
+                        routerLinkActive: 'active-route',
+                        routerLinkActiveOptions: { exact: false },
+                    }
                 ]
             },
             {
@@ -36,7 +39,9 @@ export class AppMenuComponent implements OnInit {
                             {
                                 label: 'Colaboradores',
                                 icon: 'pi pi-fw pi-id-card',
-                                routerLink: ['/general/colaborador']
+                                routerLink: ['/general/colaborador'],
+                                routerLinkActive: 'active-route',
+                                routerLinkActiveOptions: { exact: false },
                             }
                         ]
                     }

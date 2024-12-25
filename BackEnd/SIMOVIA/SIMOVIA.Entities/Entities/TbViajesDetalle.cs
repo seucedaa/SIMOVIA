@@ -11,6 +11,7 @@ namespace SIMOVIA.Entities.Entities
         public int vide_Id { get; set; }
         public int vien_Id { get; set; }
         public int cola_Id { get; set; }
+        public string colaboradoresJSON { get; set; }
 
         public virtual tbColaboradores cola { get; set; }
         public virtual tbViajesEncabezado vien { get; set; }

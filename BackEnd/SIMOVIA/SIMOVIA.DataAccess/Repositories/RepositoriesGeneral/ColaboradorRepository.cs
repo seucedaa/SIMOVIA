@@ -12,9 +12,28 @@ namespace SIMOVIA.DataAccess.Repositories.RepositoriesGeneral
 {
     public class ColaboradorRepository : IRepository<tbColaboradores>
     {
+        /// <summary>
+        /// Deshabilita un registro de colaborador basado en su ID.
+        /// </summary>
+        /// <param name="id">El identificador único del colaborador a deshabilitar.</param>
         public RequestStatus Delete(int? id)
         {
-            throw new NotImplementedException();
+            RequestStatus result = new RequestStatus();
+
+            using (var db = new SqlConnection(SIMOVIA.ConnectionString))
+            {
+                var parameter = new DynamicParameters();
+                parameter.Add("@cola_Id", id);
+
+                var answer = db.QueryFirst<int>(
+                    ScriptsDataBase.EliminarColaborador,
+                    parameter,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                result.CodeStatus = answer;
+                return result;
+            }
         }
 
         /// <summary>
@@ -95,9 +114,45 @@ namespace SIMOVIA.DataAccess.Repositories.RepositoriesGeneral
             }
         }
 
+        /// <summary>
+        /// Actualiza un registro de colaborador en la base de datos.
+        /// </summary>
+        /// <param name="item">El objeto `tbColaboradores` que contiene los datos del colaborador</param>
+        /// <returns>
+        /// Un objeto `RequestStatus` que indica el resultado de la operación:
+        /// - CodeStatus = 1: Actualización exitosa.
+        /// - CodeStatus = 0: Error inesperado durante la operación.
+        /// </returns>
         public RequestStatus Update(tbColaboradores item)
         {
-            throw new NotImplementedException();
+            RequestStatus result = new RequestStatus();
+
+            using (var db = new SqlConnection(SIMOVIA.ConnectionString))
+            {
+                var parameter = new DynamicParameters();
+                parameter.Add("@cola_Id", item.cola_Id);
+                parameter.Add("@cola_DNI", item.cola_DNI);
+                parameter.Add("@cola_Nombres", item.cola_Nombres);
+                parameter.Add("@cola_Apellidos", item.cola_Apellidos);
+                parameter.Add("@cola_CorreoElectronico", item.cola_CorreoElectronico);
+                parameter.Add("@cola_Telefono", item.cola_Telefono);
+                parameter.Add("@cola_Sexo", item.cola_Sexo);
+                parameter.Add("@cola_FechaNacimiento", item.cola_FechaNacimiento);
+                parameter.Add("@muni_Id", item.muni_Id);
+                parameter.Add("@civi_Id", item.civi_Id);
+                parameter.Add("@carg_Id", item.carg_Id);
+                parameter.Add("@cola_UsuarioModificacion", item.cola_UsuarioModificacion);
+                parameter.Add("@cola_FechaModificacion", DateTime.Now);
+
+                var answer = db.QueryFirst<int>(
+                    ScriptsDataBase.ActualizarColaborador,
+                    parameter,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                result.CodeStatus = answer;
+                return result;
+            }
         }
     }
 }

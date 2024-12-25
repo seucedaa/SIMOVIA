@@ -25,6 +25,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ColaboradorEditarComponent } from './colaboradoreditar/colaboradoreditar.component';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
+import { ColaboradorCrearComponent } from './colaboradorcrear/colaboradorcrear.component';
+import { TabViewModule } from 'primeng/tabview';
+import { ColaboradorDetalleComponent } from './colaboradordetalle/colaboradordetalle.component';
 
 @NgModule({
 	imports: [
@@ -51,8 +54,9 @@ import { CalendarModule } from 'primeng/calendar';
 		ProgressSpinnerModule,
 		SplitButtonModule,
         AutoCompleteModule,
-        CalendarModule
+        CalendarModule,
+        TabViewModule
 	],
-	declarations: [ColaboradorComponent, ColaboradorEditarComponent]
+	declarations: [ColaboradorComponent, ColaboradorEditarComponent, ColaboradorCrearComponent, ColaboradorDetalleComponent]
 })
 export class ColaboradorModule { }

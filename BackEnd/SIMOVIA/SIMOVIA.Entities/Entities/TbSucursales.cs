@@ -14,6 +14,11 @@ namespace SIMOVIA.Entities.Entities
             tbViajesEncabezado = new HashSet<tbViajesEncabezado>();
         }
 
+        //LISTAR
+        public string codigo { get; set; }
+        public string muni_Descripcion { get; set; }
+
+        //TABLA
         public int sucu_Id { get; set; }
         public string sucu_Descripcion { get; set; }
         public string sucu_Direccion { get; set; }

@@ -18,12 +18,14 @@ namespace SIMOVIA.Entities.Entities
         //PARA LISTAR
         public string codigo { get; set; }
         public string colaborador { get; set; }
-        public string edad { get; set; }
+        public string sexo { get; set; }
+        public int depa_Id { get; set; }
         public string municipio { get; set; }
         public string estadocivil { get; set; }
         public string cargo { get; set; }
         public string usuarioCreacion { get; set; }
         public string usuarioModificacion { get; set; }
+        public int cosu_Distanciakm { get; set; }
 
         //TABLA
         public int cola_Id { get; set; }
@@ -34,8 +36,6 @@ namespace SIMOVIA.Entities.Entities
         public string cola_Telefono { get; set; }
         public string cola_Sexo { get; set; }
         public DateTime cola_FechaNacimiento { get; set; }
-        public string cola_ObservacionActivar { get; set; }
-        public string cola_ObservacionInactivar { get; set; }
         public int muni_Id { get; set; }
         public int civi_Id { get; set; }
         public int carg_Id { get; set; }
