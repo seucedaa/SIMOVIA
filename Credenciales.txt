@@ -1,0 +1,13 @@
+ACCEDER A LA BASE DE DATOS EN SQL SERVER:
+servidor:
+SIMOVIA.mssql.somee.com
+
+Login:
+seucedaa_SQLLogin_1
+yiwjsuc714
+
+
+
+Usuario y clave para ingresar al sistema:
+suaeuceda
+suaeuceda
