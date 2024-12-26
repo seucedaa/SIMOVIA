@@ -1,8 +1,3 @@
-C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogic\obj\Debug\net5.0\SIMOVIA.BusinessLogic.csproj.AssemblyReference.cache
-C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogic\obj\Debug\net5.0\SIMOVIA.BusinessLogic.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogic\obj\Debug\net5.0\SIMOVIA.BusinessLogic.AssemblyInfoInputs.cache
-C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogic\obj\Debug\net5.0\SIMOVIA.BusinessLogic.AssemblyInfo.cs
-C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogic\obj\Debug\net5.0\SIMOVIA.BusinessLogic.csproj.CoreCompileInputs.cache
 C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogic\bin\Debug\net5.0\SIMOVIA.BusinessLogic.deps.json
 C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogic\bin\Debug\net5.0\SIMOVIA.BusinessLogic.dll
 C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogic\bin\Debug\net5.0\ref\SIMOVIA.BusinessLogic.dll
@@ -13,6 +8,11 @@ C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogi
 C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogic\bin\Debug\net5.0\SIMOVIA.DataAccess.pdb
 C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogic\bin\Debug\net5.0\SIMOVIA.Common.pdb
 C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogic\bin\Debug\net5.0\SIMOVIA.Entities.pdb
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogic\obj\Debug\net5.0\SIMOVIA.BusinessLogic.csproj.AssemblyReference.cache
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogic\obj\Debug\net5.0\SIMOVIA.BusinessLogic.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogic\obj\Debug\net5.0\SIMOVIA.BusinessLogic.AssemblyInfoInputs.cache
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogic\obj\Debug\net5.0\SIMOVIA.BusinessLogic.AssemblyInfo.cs
+C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogic\obj\Debug\net5.0\SIMOVIA.BusinessLogic.csproj.CoreCompileInputs.cache
 C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogic\obj\Debug\net5.0\SIMOVIA.BusinessLogic.csproj.CopyComplete
 C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogic\obj\Debug\net5.0\SIMOVIA.BusinessLogic.dll
 C:\Users\Lenovo\OneDrive\Escritorio\SIMOVIA\BackEnd\SIMOVIA\SIMOVIA.BusinessLogic\obj\Debug\net5.0\ref\SIMOVIA.BusinessLogic.dll

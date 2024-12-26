@@ -198,27 +198,34 @@
                                 formControlName="cola_FechaNacimiento"
                                 [yearRange]="anioRango"
                                 [minDate]="fechaMinima"
-                                [maxDate]="fechaMaxima"
                                 [ngClass]="{
                                     'ng-invalid ng-dirty':
                                         enviadoPersonal &&
-                                        colaboradorCrearForm.get(
-                                            'cola_FechaNacimiento'
-                                        )?.invalid
+                                        colaboradorCrearForm.get('cola_FechaNacimiento')?.invalid
                                 }"
                             ></p-calendar>
                             <label>Fecha de Nacimiento</label>
                         </span>
                         <small
                             *ngIf="
-                    enviadoPersonal &&
-                        colaboradorCrearForm.get('cola_FechaNacimiento')?.errors?.['required']
-                    "
+                                enviadoPersonal &&
+                                colaboradorCrearForm.get('cola_FechaNacimiento')?.errors?.['required']
+                            "
                             style="color: #fc6161 !important"
                         >
                             El campo es requerido.
                         </small>
+                        <small
+                            *ngIf="
+                                enviadoPersonal &&
+                                colaboradorCrearForm.get('cola_FechaNacimiento')?.errors?.['menorDeEdad']
+                            "
+                            style="color: #fc6161 !important"
+                        >
+                            El colaborador debe ser mayor de 18 años.
+                        </small>
                     </div>
+                    
                     <div class="field col-12 md:col-6">
                         <span class="p-float-label">
                             <input

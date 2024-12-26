@@ -16,6 +16,8 @@ import { ReporteComponent } from './reporte.component';
 import { ReporteRoutingModule } from './reporte-routing.module';
 import { CalendarModule } from "primeng/calendar";
 import {NgxExtendedPdfViewerModule} from 'ngx-extended-pdf-viewer';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 @NgModule({
 	imports: [
@@ -34,7 +36,9 @@ import {NgxExtendedPdfViewerModule} from 'ngx-extended-pdf-viewer';
 		MultiSelectModule,
 		DropdownModule,
 		ProgressBarModule,
-		ToastModule
+		ToastModule,
+        ProgressSpinnerModule,
+		AutoCompleteModule
 	],
 	declarations: [ReporteComponent]
 })

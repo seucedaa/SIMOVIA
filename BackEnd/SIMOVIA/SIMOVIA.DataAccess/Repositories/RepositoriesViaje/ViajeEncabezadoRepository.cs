@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SIMOVIA.Common.Models.ModelsViaje;
 
 namespace SIMOVIA.DataAccess.Repositories.RepositoriesViaje
 {
@@ -113,20 +114,30 @@ namespace SIMOVIA.DataAccess.Repositories.RepositoriesViaje
         /// <summary>
         /// Obtiene una lista de  los viajes con sus detalles.
         /// </summary>
-        /// <returns>Lista de viajes.</returns>
-        public virtual IEnumerable<tbViajesEncabezado> Report(int tran_Id, DateTime fechaInicio, DateTime fechafin)
+        /// <returns>Detalles del viaje y el total a pagar.</returns>
+        public ViajeReporteViewModel Report(int tran_Id, string fechaInicio, string fechaFin)
         {
-            List<tbViajesEncabezado> result = new List<tbViajesEncabezado>();
             using (var db = new SqlConnection(SIMOVIA.ConnectionString))
             {
                 var parameter = new DynamicParameters();
                 parameter.Add("@tran_Id", tran_Id);
                 parameter.Add("@fechaInicio", fechaInicio);
-                parameter.Add("@fechafin", fechafin);
-                result = db.Query<tbViajesEncabezado>(ScriptsDataBase.ListarReporteViaje, parameter, commandType: CommandType.StoredProcedure).ToList();
-                return result;
+                parameter.Add("@fechaFin", fechaFin);
+
+                using (var multi = db.QueryMultiple(ScriptsDataBase.ListarReporteViaje, parameter, commandType: CommandType.StoredProcedure))
+                {
+                    var detalle = multi.Read<ViajeDetalleViewModel>().ToList();
+                    var totalPagar = multi.Read<string>().FirstOrDefault();
+
+                    return new ViajeReporteViewModel
+                    {
+                        Detalle = detalle,
+                        TotalPagar = totalPagar
+                    };
+                }
             }
         }
+
         /// <summary>
         /// Actualiza un registro de viaje encabezado en la base de datos.
         /// </summary>

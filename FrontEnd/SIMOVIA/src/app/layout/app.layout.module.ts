@@ -19,6 +19,7 @@ import { AppSidebarComponent } from "./app.sidebar.component";
 import { AppLayoutComponent } from "./app.layout.component";
 import { ToastModule } from 'primeng/toast';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,8 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
         RouterModule,
         AppConfigModule,
         ToastModule,
-        ConfirmPopupModule
+        ConfirmPopupModule,
+        OverlayPanelModule
     ],
     exports: [AppLayoutComponent]
 })

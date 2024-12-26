@@ -1,18 +1,34 @@
 <div class="card">
-    <h3>Ventas de Productos</h3>
-    <div class="col-2">
-        
+    <h1 class="text-center">Reporte</h1>
+
+    <hr />
+
+    <div
+        *ngIf="cargando"
+        class="flex justify-content-center align-items-center"
+        style="height: 300px"
+    >
+        <p-progressSpinner></p-progressSpinner>
     </div>
-    <div class="grid p-fluid">
-        <div class="field col-12 md:col-4">
+
+    <div *ngIf="!cargando">
+        <div class="grid p-fluid mt-3">
+            <div class="field col-12 md:col-4">
                 <span class="p-float-label">
-                    <p-dropdown [options]="sucursales" 
-                        optionLabel="sucur_Descripcion" 
-                        optionValue="sucur_Id"
-                        (onChange)="onSucursalChange($event.value)" 
-                        [(ngModel)]="sucursalid">
-                        </p-dropdown>   
-                <label for="dropdown">Sucursal</label>
+                        <p-autoComplete
+                            inputId="acencargado"
+                            [(ngModel)]="seleccionadoTransportista"
+                            [suggestions]="filtradoTransportistas"
+                            (completeMethod)="filtroTransportista($event)"
+                            field="tran_Nombre"
+                            placeholder="Seleccione el encargado."
+                            [dropdown]="true"
+                            [showClear]="true"
+                            (onClear)="limpiarTransportista()"
+                            (onSelect)="seleccionandoTransportista($event.value)"
+                            [ngModelOptions]="{ standalone: true }"
+                        ></p-autoComplete>
+                <label for="dropdown">Transportista</label>
             </span>
         </div>
         <div class="field col-12 md:col-4">
@@ -20,7 +36,7 @@
                 <p-calendar
                     inputId="calendar"
                     [(ngModel)]="inicio"
-                    (onSelect)="onFechaChange('inicio', $event)"
+                    (onSelect)="seleccionandoFecha('inicio', $event)"
                 ></p-calendar>
                 <label for="calendar">Fecha Inicio</label>
             </span>
@@ -30,7 +46,7 @@
                 <p-calendar
                     inputId="calendar"
                     [(ngModel)]="fin"
-                    (onSelect)="onFechaChange('fin', $event)"
+                    (onSelect)="seleccionandoFecha('fin', $event)"
                 ></p-calendar>
                 <label for="calendar">Fecha Fin</label>
             </span>
@@ -38,9 +54,7 @@
         <div class="field col-12">
             <iframe title="PDF-file" #pdfViewer style="width:100%;height:800px;"></iframe>
         </div>
-       
+        </div>
     </div>
-    
+
 </div>
-
-

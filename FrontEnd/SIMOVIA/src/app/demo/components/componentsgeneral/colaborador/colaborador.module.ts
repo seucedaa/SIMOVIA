@@ -28,6 +28,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { ColaboradorCrearComponent } from './colaboradorcrear/colaboradorcrear.component';
 import { TabViewModule } from 'primeng/tabview';
 import { ColaboradorDetalleComponent } from './colaboradordetalle/colaboradordetalle.component';
+import { TieredMenuModule } from 'primeng/tieredmenu';
 
 @NgModule({
 	imports: [
@@ -55,7 +56,8 @@ import { ColaboradorDetalleComponent } from './colaboradordetalle/colaboradordet
 		SplitButtonModule,
         AutoCompleteModule,
         CalendarModule,
-        TabViewModule
+        TabViewModule,
+		TieredMenuModule
 	],
 	declarations: [ColaboradorComponent, ColaboradorEditarComponent, ColaboradorCrearComponent, ColaboradorDetalleComponent]
 })

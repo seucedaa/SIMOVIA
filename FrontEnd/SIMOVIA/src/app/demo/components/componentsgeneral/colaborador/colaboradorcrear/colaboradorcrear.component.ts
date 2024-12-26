@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { usuario } from 'src/app/demo/models/modelsacceso/usuarioviewmodel';
 import { colaborador } from 'src/app/demo/models/modelsgeneral/colaboradorviewmodel';
 import { colaboradorPorSucursal } from 'src/app/demo/models/modelsviaje/colaboradorporsucursalviewmodel';
 import { sucursal } from 'src/app/demo/models/modelsviaje/sucursalviewmodel';
@@ -91,7 +92,7 @@ export class ColaboradorCrearComponent implements OnInit {
                 ]],
             cola_Telefono: [null, [Validators.required]],
             cola_Sexo: ['F', [Validators.pattern('^[MF]$')]],
-            cola_FechaNacimiento: [null, [Validators.required]], 
+            cola_FechaNacimiento: [null, [Validators.required, this.mayorDeEdadValidador()]], 
             muni_Id: [null, [Validators.required]],
             civi_Id: [null, [Validators.required]],
             carg_Id: [null, [Validators.required]],
@@ -127,10 +128,10 @@ export class ColaboradorCrearComponent implements OnInit {
 
         // Establecer fecha mínima y máxima
         this.fechaMinima = new Date(anioActual - 80, 0, 1); 
-        this.fechaMaxima = new Date(anioActual, fechaActual.getMonth(), fechaActual.getDate()); 
+        this.fechaMaxima = new Date(anioActual - 18, fechaActual.getMonth(), fechaActual.getDate()); 
 
         // Rango de años para el selector de años
-        this.anioRango = `${anioActual - 80}:${anioActual - 80}`;
+        this.anioRango = `${anioActual - 80}:${anioActual}`;
     }
 
     cargarSucursales() {
@@ -209,12 +210,40 @@ export class ColaboradorCrearComponent implements OnInit {
         return esValido; // Retorna true si todos los campos son validos
     }
 
+        // Validador personalizado para verificar que el usuario sea mayor de 18 años
+        mayorDeEdadValidador() {
+            return (control: AbstractControl) => {
+                if (!control.value) {
+                    return null; // Si no hay valor, no valida nada aún
+                }
+                const fechaNacimiento = new Date(control.value);
+                const fechaHoy = new Date();
+                const edadMinima = 18;
+                const fechaMaxima = new Date(
+                    fechaHoy.getFullYear() - edadMinima,
+                    fechaHoy.getMonth(),
+                    fechaHoy.getDate()
+                );
+        
+                const isMenorDeEdad = fechaNacimiento > fechaMaxima;
+                console.log('Validador ejecutado:', {
+                    value: control.value,
+                    isMenorDeEdad,
+                });
+        
+                return isMenorDeEdad ? { menorDeEdad: true } : null;
+            };
+        }
+        
+    
+    
     //valida los campos del tab Personal
     //si es valido avanza al siguiente, de lo contrario no avanza y activa mensajes de error
     siguiente() {
         // Validar los campos del tab Personal
         const dni = this.colaboradorCrearForm.get('cola_DNI')?.value;
         const correo = this.colaboradorCrearForm.get('cola_CorreoElectronico')?.value;
+        const fechaNacimiento = this.colaboradorCrearForm.get('cola_FechaNacimiento')?.value;
 
         if (dni && this.colaboradores.some(c => c.cola_DNI === dni) && correo && this.colaboradores.some(c => c.cola_CorreoElectronico === correo)) {
             this.dniYaRegistrado = true;
@@ -250,6 +279,17 @@ export class ColaboradorCrearComponent implements OnInit {
                 detail: 'Correo electrónico existente.',
                 life: 3000,
             });
+            return;
+        }
+
+        if (fechaNacimiento && new Date(fechaNacimiento) > this.fechaMaxima) {
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Advertencia',
+                detail: 'El colaborador debe ser mayor de 18 años.',
+                life: 3000,
+            });
+            this.IndexTab = 0;
             return;
         }
 
@@ -580,7 +620,10 @@ export class ColaboradorCrearComponent implements OnInit {
         }
 
         const formData = { ...this.colaboradorCrearForm.value };
-        formData.cola_UsuarioCreacion = 1;
+
+        const usuarioRegistrado = sessionStorage.getItem('usuario');
+        const usuarioParseado = JSON.parse(usuarioRegistrado);
+        formData.cola_UsuarioCreacion = usuarioParseado.usua_Id;
 
         this.colaboradorService.Insertar(formData).subscribe({
             next: (response) => {

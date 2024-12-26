@@ -438,7 +438,10 @@ export class ViajeCrearComponent implements OnInit {
             const fecha = new Date(formData.vien_Fecha).toISOString().split('T')[0];
             formData.vien_Fecha = fecha;
 
-            formData.vien_UsuarioCreacion = 1;
+            const usuarioRegistrado = sessionStorage.getItem('usuario');
+            const usuarioParseado = JSON.parse(usuarioRegistrado);
+
+            formData.vien_UsuarioCreacion = usuarioParseado.usua_Id;
             formData.vien_DistanciaTotalkm = this.distanciaTotal;
             formData.vien_Total = this.totalPagar;
             console.log(formData);

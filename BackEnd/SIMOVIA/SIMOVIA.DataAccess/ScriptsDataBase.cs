@@ -51,7 +51,7 @@ namespace SIMOVIA.DataAccess
         public static string BuscarViajeEncabezado = "[Viaj].[SP_ViajeEncabezado_Buscar]";
         public static string EliminarViajeEncabezado = "[Viaj].[SP_ViajeEncabezado_Eliminar]";
         public static string ListarViajesEncabezado = "[Viaj].[SP_ViajesEncabezado_Listar]";
-        public static string ListarReporteViaje = "[Viaj].[SP_ViajesEncabezado_Reportes]";
+        public static string ListarReporteViaje = "[Viaj].[SP_ViajesEncabezado_Reporte]";
         #endregion
 
         #region Detalle

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
 import { CookieService } from 'ngx-cookie-service';
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
     templateUrl: './app.topbar.component.html',
     providers: [ConfirmationService, MessageService]
 })
-export class AppTopBarComponent {
+export class AppTopBarComponent implements OnInit{
 
     items!: MenuItem[];
 
@@ -25,6 +25,27 @@ export class AppTopBarComponent {
         private cookieService: CookieService,
         private router: Router
     ) { }
+
+    usuario:string = '';
+    colaborador: string = '';
+    cargo:string = '';
+    correo:string = '';
+    telefono:string = '';
+
+    ngOnInit(): void {
+      const usuarioRegistrado = sessionStorage.getItem('usuario');
+      const usuarioParseado = JSON.parse(usuarioRegistrado);
+
+      const colaboradorRegistrado = sessionStorage.getItem('colaborador');
+      const colaboradorParseado = JSON.parse(colaboradorRegistrado);
+
+      this.usuario = usuarioParseado.usua_Usuario;
+      this.colaborador = colaboradorParseado.colaborador;
+      this.cargo = colaboradorParseado.carg_Descripcion;
+      this.correo = colaboradorParseado.cola_CorreoElectronico;
+      this.telefono = `${colaboradorParseado.cola_Telefono.substring(0, 4)}-${colaboradorParseado.cola_Telefono.substring(4)}`;
+
+    }
 
     salir(event: Event) {
         this.confirmationService.confirm({

@@ -27,10 +27,22 @@
                 layoutService.state.profileSidebarVisible
         }"
     >
-        <button class="p-link layout-topbar-button">
+        <button class="p-link layout-topbar-button" (click)="op1.toggle($event)">
             <i class="pi pi-user"></i>
-            <span>Profile</span>
+            <span>Perfil</span>
         </button>
+        <p-overlayPanel #op1 [showCloseIcon]="true" [style]="{width: '450px'}">
+            <h4 class="text-center" style="color: #757d92;"><b>Perfil</b></h4>
+            <hr>
+            <div class="p-4">
+                <p><strong>Usuario:</strong> <span style="color: #757d92"> {{ usuario }}</span></p>
+                <p><strong>Colaborador:</strong> <span style="color: #757d92"> {{ colaborador }}</span></p>
+                <p><strong>Cargo:</strong> <span style="color: #757d92"> {{ cargo }}</span></p>
+                <p><strong>Correo:</strong> <span style="color: #757d92"> {{ correo }}</span></p>
+                <p><strong>Teléfono:</strong> <span style="color: #757d92"> +504 {{ telefono }}</span></p>
+            </div>
+        </p-overlayPanel>
+        
         <button
             class="p-link layout-topbar-button"
             type="button"

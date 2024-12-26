@@ -28,7 +28,8 @@ const routes: Routes = [
         children: [
             { path: '',  data: { breadcrumb: 'Inicio' }, loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
             { path: 'general', canActivate: [PermisosGuard],  data: { breadcrumb: 'General' }, loadChildren: () => import('./demo/components/componentsgeneral/general.module').then(m => m.GeneralModule) },
-            { path: 'viaje', canActivate: [PermisosGuard],  data: { breadcrumb: 'Viaje' }, loadChildren: () => import('./demo/components/componentsviaje/viaje.module').then(m => m.ViajeModule) }
+            { path: 'viaje', canActivate: [PermisosGuard],  data: { breadcrumb: 'Viaje' }, loadChildren: () => import('./demo/components/componentsviaje/viaje.module').then(m => m.ViajeModule) },
+            { path: 'reporte', canActivate: [PermisosGuard],  data: { breadcrumb: 'reporte' }, loadChildren: () => import('./demo/components/componentsreporte/reporte.module').then(m => m.ReporteModule) }
         ]
     },
     { path: 'notfound', component: NotfoundComponent },

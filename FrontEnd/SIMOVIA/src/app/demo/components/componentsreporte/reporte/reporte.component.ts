@@ -1,337 +1,230 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MessageService } from 'primeng/api';
-import { Producto } from 'src/app/demo/models/ProductoViewModel';
-import { ReporteService } from 'src/app/demo/service/reporte.service';
-import { SucursalService } from 'src/app/demo/service/sucursal.service';
-import { Sucursal } from 'src/app/demo/models/SucursalViewModel';
-import { Subscription, debounceTime } from 'rxjs';
-import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { transportista } from 'src/app/demo/models/modelsviaje/transportistaviewmodel';
+import { transportistaService } from 'src/app/demo/services/servicesviaje/transportista.service';
+import { viajeService } from 'src/app/demo/services/servicesviaje/viajeencabezado.service';
+import { Reporte } from 'src/app/demo/models/modelsviaje/reporteviajeviewmodel';
+import { Subscription } from 'rxjs';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { Router } from '@angular/router';
-
-
-interface expandedRows {
-    [key: string]: boolean;
-}
-
+import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { reporteService } from 'src/app/demo/services/servicesviaje/reporteviaje.service';
 @Component({
-    templateUrl: './pvendidos.component.html',
-    providers: [MessageService]
+    selector: 'reporte-reporte',
+    templateUrl: './reporte.component.html',
 })
-
 export class ReporteComponent implements OnInit {
+    tranId: number | null = null;
+    inicio: Date = new Date(new Date().getFullYear(), new Date().getMonth(), 1); 
+    fin: Date = new Date(); // Fecha actual
+    transportistas: any[] = [];
+    filtradoTransportistas: any[] = [];
+    seleccionadoTransportista: any;    
+    cargando: boolean = false;
+    reporteData: Reporte[] = [];
 
-    productos: Producto[] = [];
-    subscription: Subscription;
-
-    sucursales: Sucursal[] = [];
-    sucursalid: any;
-    inicio:any;
-    fin:any;
-    sucursa:any;
-
-    sucursall:any;
-    formattedInicio:any;
-    formattedFin:any;
-    sucursal: Sucursal;
-
-
+    usuario:string='';
+    persona:string='';
     @ViewChild('pdfViewer', { static: false }) pdfViewer!: ElementRef;
 
-    constructor(private layoutService: LayoutService,    private router: Router,
-        private reporteService: ReporteService,
-      private sucursalService: SucursalService, private messageService: MessageService) { 
-        this.subscription = this.layoutService.configUpdate$
-        .pipe(debounceTime(25))
-        .subscribe((config) => {
-             this.ngOnInit();
-         });
-     
-     const today = new Date();
-     const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-     this.inicio = firstDayOfMonth;
-     this.fin = today;}
+    constructor(
+        private transportistaService: transportistaService,
+        private viajeService: viajeService,
+        private reporteService: reporteService
+    ) {}
 
-     onSucursalChange(sucur_Id: any) {
+    ngOnInit(): void {
+        const usuarioRegistrado = sessionStorage.getItem('usuario');
+        const usuarioParseado = JSON.parse(usuarioRegistrado);
+        this.usuario = usuarioParseado.usuario;
+        const colaboradorRegistrado = sessionStorage.getItem('colaborador');
+        const colaboradorParseado = JSON.parse(colaboradorRegistrado);
+        this.persona = colaboradorParseado.colaborador;
+        this.cargando = true;
+        
 
-        this.sucursalService.Details(Number(sucur_Id)).then(data => {
-            console.log(data);
-            this.sucursal = data;
-
-            this.sucursall= this.sucursal.sucur_Descripcion;
+        this.transportistaService.Listar().subscribe((response) =>{
+            this.transportistas = response;
+            this.cargando = false;
         });
-      
-      console.log(this.sucursall);
-      console.log(this.sucursalid);
+    }
 
-      if(this.sucursalid == 0){
-          this.todas();
-      }else{
-          this.cambio();
-      }   
-  }
+    seleccionandoTransportista(tranId: number) {
+        this.tranId = tranId;
+        this.cargarReporte();
+    }
 
-    todas(){
-        this.sucursall = 'Todas las sucursales';
-
-      this.formattedInicio = this.formatDate(this.inicio);
-      this.formattedFin = this.formatDate(this.fin);
-  
-      this.reporteService.getTodasProductos(this.formattedInicio,this.formattedFin).then(response => {
-        if (response && response.success) {
-            this.productos = response.data;
-
-            if (this.productos && this.productos.length > 0) {
-                console.log('Productos:', this.productos);
-                this.generatePDF();
-            } else {
-              this.generatePDF();
-            }
-        } else {
-            console.error('Error en la respuesta de la API:', response.message);
+    seleccionandoFecha(tipo: string, event: Date) {
+        if (tipo === 'inicio') {
+            this.inicio = event;
+        } else if (tipo === 'fin') {
+            this.fin = event;
         }
-    }).catch(error => {
-        console.error('Error al obtener todos los productos:', error);
-    });
+        this.cargarReporte();
     }
 
-    cambio(){
-
-        this.formattedInicio = this.formatDate(this.inicio);
-        this.formattedFin = this.formatDate(this.fin);
-
-      
-      this.reporteService.getProductos(this.sucursalid,this.formattedInicio,this.formattedFin).then(response => {
-        if (response && response.success) {
-            this.productos = response.data;
-
-            if (this.productos && this.productos.length > 0) {
-                console.log('Productos:', this.productos);
-                this.generatePDF();
-            } else {
-              this.generatePDF();
-            }
-        } 
-    })
-   }
-
-    formatDate(date: Date): string {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0'); 
-      const day = String(date.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-  }
-
-  onFechaChange(type: string, event: any) {
-    if (type === 'inicio') {
-        this.inicio = event;
-    } else if (type === 'fin') {
-        this.fin = event;
+     
+    filtroTransportista(event: any) {
+        const query = event.query.toLowerCase();
+        this.filtradoTransportistas = this.transportistas.filter((transportista) =>
+            transportista.tran_Nombre.toLowerCase().includes(query)
+        );
     }
-    this.cambio();
-  }
 
-     ngOnInit(){
-        const usuariolog = sessionStorage.getItem('usuario');
-        const logueado = JSON.parse(usuariolog);
-        if(!logueado)
-            {
-                this.router.navigate(['/login']);
-
-            }
-        this.formattedInicio = this.formatDate(this.inicio);
-        this.formattedFin = this.formatDate(this.fin);
-
-      this.sucursalService.getList().then(data => {
-        this.sucursales = data;
-        
-        this.sucursales = this.sucursales.map((sucursal: any) => ({
-            sucur_Id: sucursal.sucur_Id,
-            sucur_Descripcion: sucursal.sucur_Descripcion,
-            sucursal_Titulo: `${sucursal.sucur_Id} - ${sucursal.sucur_Descripcion}` 
-        }));
+    limpiarTransportista() {
+        this.seleccionadoTransportista = null;
+    }
     
-        this.sucursales.unshift({ sucur_Id: 0, sucur_Descripcion: 'Mostrar todas' });
 
-        const usuarioJson = sessionStorage.getItem('usuario');
-        const usuario = JSON.parse(usuarioJson);
-        this.sucursa = usuario.sucur_Id;
-
-        const sucursalUsuario = this.sucursales.find(s => s.sucur_Id === this.sucursa);
-        if (sucursalUsuario) {
-            this.sucursall = sucursalUsuario.sucur_Descripcion;
-            this.sucursalid = sucursalUsuario.sucur_Id;
-        } 
-
-        this.reporteService.getProductos(this.sucursa,this.formattedInicio,this.formattedFin).then(response => {
-
-
-          if (response && response.success) {
-              this.productos = response.data;
-  
-              if (this.productos && this.productos.length > 0) {
-                  console.log('Productos:', this.productos);
-                  this.generatePDF();
-              } else {
-                this.generatePDF();
-
-              }
-          } 
-      })
-    });
-
-   
+    cargarReporte() {
+        if (this.tranId && this.inicio && this.fin) {
+            this.cargando = true;
+            const fechaInicio = this.formatoFecha(this.inicio);
+            const fechaFin = this.formatoFecha(this.fin);
+    
+            this.reporteService.Reporte(this.seleccionadoTransportista.tran_Id, fechaInicio, fechaFin).subscribe({
+                next: (response: any) => {
+                    console.log('respond', response);
+                    this.reporteData = response.detalle || []; 
+                    this.mostrarPDF();
+                    this.cargando = false;
+                },
+                error: () => {
+                    console.error('Error al cargar el reporte');
+                    this.cargando = false;
+                },
+            });
+        }
     }
+    
+    
 
-    generatePDF() {
-      const doc = new jsPDF({
-          orientation: 'portrait',
-          unit: 'px',
-          format: 'letter'
-      });
-
-      doc.setProperties({
-        title: 'Ventas de Productos',
-        subject: 'Reporte de ventas de productos',
-        author: 'Supermercado La Colonia',
-        keywords: 'ventas, productos, supermercado',
-        creator: 'Supermercado La Colonia'
-    });
-
-      const logoURL = 'assets/layout/images/lacolonia/manzana.png';  
-      const imgWidth = 80;  
-      const imgHeight = 80; 
-      const productosVendidos = this.productos.reduce((total, producto) => total + parseInt(producto.cantidad), 0);
-      const usuarioJson = sessionStorage.getItem('usuario');
-      const usuario = JSON.parse(usuarioJson);
-      const persona = usuario.perso_NombreCompleto;
-
-      const pageWidth = doc.internal.pageSize.getWidth();
-      const pageHeight = doc.internal.pageSize.getHeight();
-
-      doc.setDrawColor('#40a72e');
-      doc.setLineWidth(2);
-      doc.rect(10, 10, pageWidth - 20, pageHeight - 20);
-
-      const centerX = pageWidth / 2;
-
-      const logoX = 100;  
-      const textX = logoX + imgWidth + 10;  
-      const textY = 50;  
-
-      doc.addImage(logoURL, 'JPEG', logoX, textY - imgHeight / 2, imgWidth, imgHeight);
-
-      doc.setFontSize(16);
-      doc.setTextColor(64, 167, 46);
-      doc.setFont(undefined, 'bold');
-      doc.text('SUPERMERCADO LA COLONIA', 170, textY);
-
-      doc.setFontSize(12);
-      doc.setTextColor(239, 91, 49);
-      doc.setFont(undefined, 'normal');
-      doc.text('Paga menos vive mejor', 170, textY + 15);
-
-      doc.setFontSize(10);
-      doc.setTextColor(0, 0, 0);
-      doc.setFont(undefined, 'normal');
-      doc.text('Escribenos: servicioalcliente@lacolonia.com', 30, 120);
-      doc.text('Servicio al cliente: (+504) 2216-1950', 30, 130);
-      doc.text('Oficinas corporativas: (+504) 2216-1900', 30, 140);
-      doc.text('Horario de atención en línea: 8:00 A.M. A 8:00 P.M.', 30, 150);
-
-      doc.setFontSize(14);
-      doc.setFont(undefined, 'bold');
-      doc.text('Ventas de Productos',centerX, 100, { align: 'center' });
-
-      doc.setFontSize(11);
+    mostrarPDF() {
+        const doc = new jsPDF({
+            orientation: 'portrait',
+            unit: 'px',
+            format: 'letter'
+        });
+    
+        doc.setProperties({
+            title: 'Reporte de Viajes',
+            subject: 'Reporte agrupado por viaje',
+            author: 'Sistema de Transporte',
+            keywords: 'viajes, transportista, sucursales',
+            creator: 'Sistema de Transporte'
+        });
+    
+        const logoURL = 'assets/layout/images/SIMOVIA2.png'; 
+        const imgWidth = 80;
+        const imgHeight = 50;
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const centerX = pageWidth / 2;
+    
+        doc.setDrawColor('#757d92'); 
+        doc.setLineWidth(2);
+        doc.rect(10, 10, pageWidth - 20, doc.internal.pageSize.getHeight() - 20);
+    
+        doc.setFontSize(16);
+        doc.setTextColor('#757d92'); 
         doc.setFont(undefined, 'bold');
-        doc.setTextColor(64, 167, 46);
-        doc.text('Sucursal: ', 30, 170);
-        
-        doc.setFontSize(11);
-        doc.setFont(undefined, 'normal');
-        doc.setTextColor(0, 0, 0);
-        doc.text(`${this.sucursall}`, 70, 170);
-
-        doc.setFontSize(11);
-        doc.setFont(undefined, 'bold');
-        doc.setTextColor(64, 167, 46);
-        doc.text('Fechas: ', 30, 180);
-        
-        doc.setFontSize(11);
-        doc.setFont(undefined, 'normal');
-        doc.setTextColor(0, 0, 0);
-        doc.text(`${this.formattedInicio} - ${this.formattedFin}`, 70, 180);
-
-
+        doc.text('Reporte de Viajes', centerX, 40, { align: 'center' });
+    
+        const logoY = 50; 
+        doc.addImage(logoURL, 'JPEG', centerX - imgWidth / 2, logoY, imgWidth, imgHeight);
+    
+        const textStartY = logoY + imgHeight + 10;
         doc.setFontSize(12);
-        doc.setFont(undefined, 'bold');
-        doc.setTextColor(64, 167, 46);
-        doc.text('Productos Vendidos', pageWidth - 120, 120);
-        doc.setFontSize(12);
-        doc.setFont(undefined, 'normal');
         doc.setTextColor(0, 0, 0);
-        doc.text(productosVendidos.toString(), pageWidth - 40, 130);
+        doc.text(
+            `Viajes entre: ${this.formatoFecha(this.inicio)} - ${this.formatoFecha(this.fin)}`,
+            30,
+            textStartY + 15
+        );
+    
+        doc.setFontSize(11);
+        doc.setTextColor('#757d92'); 
+        doc.text('Transportista seleccionado:', 30, textStartY + 30);
+    
+        doc.setFontSize(11);
+        doc.setTextColor(0, 0, 0);
+        doc.text(this.seleccionadoTransportista?.tran_Nombre || 'Sin nombre', 140, textStartY + 30);
+    
+        const groupedData = this.agruparPor(this.reporteData, 'vien_Id');
+    
+        let startY = textStartY + 50;
+        Object.keys(groupedData).forEach((vien_Id) => {
+            const viajes = groupedData[vien_Id];
+            const viaje = viajes[0];
+    
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.setFont(undefined, 'bold');
+            doc.text(`Codigo: ${vien_Id}`, 30, startY);
+            doc.text(`Fecha: ${viaje.vien_Fecha}`, 30, startY + 10);
+            doc.text(`Sucursal: ${viaje.sucursal}`, 30, startY + 20);
+            doc.text(`Transportista: ${viaje.transportista}`, 30, startY + 30);
+            doc.text(`Distancia Total (km): ${viaje.vien_DistanciaTotalkm}`, 30, startY + 40);
+            doc.text(`Tarifa del Transportista: ${viaje.vien_TarifaTransportista}`, 30, startY + 50);
+            doc.text(`Total: ${viaje.vien_Total}`, 30, startY + 60);
+    
+            startY += 80;
+    
+            autoTable(doc, {
+                startY,
+                head: [['ID', 'Colaborador', 'Distancia (km)', 'Fecha de creación']],
+                body: viajes.map((item) => [
+                    item.vide_Id || 'Sin ID',
+                    item.colaborador || 'Sin colaborador',
+                    item.cosu_Distanciakm || '0.00',
+                    item.vien_FechaCreacion || 'Sin fecha'
+                ]),
+                styles: { fontSize: 10 },
+                headStyles: {
+                    fillColor: [117, 125, 146], 
+                    textColor: [255, 255, 255],
+                    halign: 'center',
+                    valign: 'middle',
+                    fontStyle: 'bold'
+                },
+                theme: 'grid',
+        didDrawPage: (data) => {
+            const pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
+            const currentDate = new Date();
+            const formattedDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')} ${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}`;
 
-      let proveedor = 'No hay productos';
-    if (this.productos.length > 0) {
-        const proveedorCount = this.productos.reduce((acc, producto) => {
-            acc[producto.prove_Marca] = (acc[producto.prove_Marca] || 0) + 1;
-            return acc;
+            doc.setFontSize(10);
+            doc.text(`Emitido por: ${this.persona}`,data.settings.margin.left, pageHeight - 40);
+            doc.text(`Fecha emitida: ${formattedDate}`, data.settings.margin.left, pageHeight - 30);
+            doc.text(`Página ${data.pageNumber}`, data.settings.margin.left, pageHeight - 20);
+        }
+            });
+    
+            startY = (doc as any).autoTable.previous.finalY + 20;
+        });
+    
+        const pdfBlob = doc.output('blob');
+        const pdfUrl = URL.createObjectURL(pdfBlob);
+    
+        setTimeout(() => {
+            if (this.pdfViewer?.nativeElement) {
+                this.pdfViewer.nativeElement.src = pdfUrl;
+            } else {
+                console.error('El iframe no está disponible para mostrar el PDF.');
+            }
+        }, 0);
+    }
+    
+    agruparPor(array: any[], key: string) {
+        return array.reduce((result, currentValue) => {
+            (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
+            return result;
         }, {});
-
-        proveedor = Object.keys(proveedorCount).reduce((a, b) => proveedorCount[a] > proveedorCount[b] ? a : b);
     }
+        
 
-        doc.setFontSize(12);
-        doc.setFont(undefined, 'bold');
-        doc.setTextColor(64, 167, 46);
-        doc.text('Proveedor mas Vendido', pageWidth - 133, 150);
-        doc.setFontSize(12);
-        doc.setFont(undefined, 'normal');
-        doc.setTextColor(0, 0, 0);
-        doc.text(proveedor.toString(), pageWidth - 100, 160);
-
-      autoTable(doc, {
-          head: [['Código', 'Descripción', 'Precio Venta', 'Cantidad', 'Proveedor', 'Categoría', 'Sub-Categoría']],
-          body: this.productos.map(producto => [
-              producto.produ_Id,
-              producto.produ_Descripcion,
-              producto.produ_PrecioVenta,
-              producto.cantidad,
-              producto.prove_Marca,
-              producto.categ_Descripcion,
-              producto.subca_Descripcion
-          ]),
-          startY: 190,
-          styles: {
-              font: 'helvetica',
-              fontSize: 10,
-          },
-          headStyles: {
-              fillColor: [64, 167, 46],
-              textColor: [255, 255, 255],
-              halign: 'center',
-              valign: 'middle',
-              fontStyle: 'bold',
-          },
-          theme: 'grid',
-          didDrawPage: (data) => {
-              const pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
-              const currentDate = new Date();
-              const formattedDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')} ${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}`;
-
-              doc.setFontSize(10);
-              doc.text(`Emitido por: ${persona}`,data.settings.margin.left, pageHeight - 40);
-              doc.text(`Fecha emitida: ${formattedDate}`, data.settings.margin.left, pageHeight - 30);
-              doc.text(`Página ${data.pageNumber}`, data.settings.margin.left, pageHeight - 20);
-          }
-      });
-
-      const pdfBlob = doc.output('blob');
-      const pdfUrl = URL.createObjectURL(pdfBlob);
-      this.pdfViewer.nativeElement.src = pdfUrl;
-  }
-
+    formatoFecha(date: Date): string {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
 }

@@ -78,19 +78,20 @@ namespace SIMOVIA.BusinessLogic.Services.ServicesViaje
         /// - Result = Success y Data contiene los datos del viaje.
         /// - Result = Error si ocurre un error inesperado durante la operación.
         /// </returns>
-        public ServiceResult Reporte(int tran_Id, DateTime fechaInicio, DateTime fechaFin)
+        public ServiceResult Reporte(int tran_Id, string fechaInicio, string fechaFin)
         {
             var result = new ServiceResult();
             try
             {
                 var map = _viajeRepository.Report(tran_Id, fechaInicio, fechaFin);
-                return result.Ok(map);
+                return result.Ok(map); 
             }
             catch (Exception ex)
             {
                 return result.Error(ex.Message);
             }
         }
+
 
         /// <summary>
         /// Busca un viaje en la base de datos por su ID.

@@ -47,11 +47,12 @@ namespace SIMOVIA.API.Controllers.ControllersViaje
         /// </summary>
         /// <returns>Lista de viajes disponibles.</returns>
         [HttpGet("Reporte/{tran_Id}/{fechaInicio}/{fechaFin}")]
-        public IActionResult Reporte(int tran_Id, DateTime fechaInicio, DateTime fechaFin)
+        public IActionResult Reporte(int tran_Id, string fechaInicio, string fechaFin)
         {
             var response = _viajeService.Reporte(tran_Id, fechaInicio, fechaFin);
-            return Ok(response.Data);
+            return Ok(response.Data); 
         }
+
 
         /// <summary>
         /// Inserta un nuevo viaje en la base de datos.
