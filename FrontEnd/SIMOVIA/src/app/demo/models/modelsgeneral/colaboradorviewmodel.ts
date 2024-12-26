@@ -1,6 +1,7 @@
 export class colaborador {
     codigo?:string;
     colaborador?: string;
+    colaboradorDNI?: string;
     cola_Id?: number;                
     cola_DNI?: string;             
     cola_Nombres?: string;          

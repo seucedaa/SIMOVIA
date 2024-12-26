@@ -25,9 +25,16 @@ namespace SIMOVIA.API.Controllers.ControllersAcceso
         [HttpGet("InicioSesion/{usuario}/{clave}")]
         public IActionResult InicioSesion(string usuario, string clave)
         {
-            var respuesta = _usuarioService.InicioSesion(usuario, clave);
+            var respuesta = _usuarioService.IniciarSesion(usuario, clave);
 
-            return Ok(respuesta.Data);
+            return StatusCode(respuesta.Code, new
+            {
+                statusCode = respuesta.Code,
+                success = respuesta.Success,
+                message = respuesta.Message,
+                data = respuesta.Data
+
+            });
         }
     }
 }

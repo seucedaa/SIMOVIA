@@ -82,12 +82,12 @@ export class ColaboradorComponent implements OnInit {
 
     detalleColaborador(colaborador: colaborador) {
         this.colaboradorService.almacenarId(colaborador.cola_Id!);
-        this.router.navigate(['/general/colaborador/colaboradordetalle']);
+        this.router.navigate(['/SIMOVIA/general/colaborador/colaboradordetalle']);
     }
 
     editarColaborador(colaborador: colaborador) {
         this.colaboradorService.almacenarId(colaborador.cola_Id!);
-        this.router.navigate(['/general/colaborador/colaboradoreditar']);
+        this.router.navigate(['/SIMOVIA/general/colaborador/colaboradoreditar']);
     }
 
     modalEliminarColaborador(colaborador: colaborador) {

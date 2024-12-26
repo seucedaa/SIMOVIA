@@ -29,15 +29,15 @@
 
     <hr />
 
-    <!-- <div
+    <div
         *ngIf="cargando"
         class="flex justify-content-center align-items-center"
         style="height: 300px"
     >
         <p-progressSpinner></p-progressSpinner>
-    </div> -->
+    </div>
 
-    <!-- <div *ngIf="!cargando"> -->
+    <div *ngIf="!cargando">
         <form [formGroup]="viajeEditarForm">
             <div class="grid p-fluid mt-3">
                 <div class="field col-12 md:col-6">
@@ -45,30 +45,14 @@
                         <p-autoComplete
                             inputId="acsucursal"
                             [(ngModel)]="seleccionadoSucursal"
-                            [suggestions]="filtradoSucursales"
-                            (completeMethod)="filtroSucursal($event)"
                             field="sucu_Descripcion"
-                            placeholder="Seleccione la sucursal."
                             [dropdown]="true"
-                            [showClear]="true"
-                            (onClear)="limpiarSucursal()"
-                            (onSelect)="seleccionarSucursal($event)"
                             [ngModelOptions]="{ standalone: true }"
-                            [ngClass]="{
-                                'ng-invalid ng-dirty':
-                                    enviado &&
-                                    viajeEditarForm.get('sucu_Id')
-                                        ?.invalid
-                            }"
+                            [disabled]="true"
+                            [styleClass]="'custom-disabled-text'"
                         ></p-autoComplete>
                         <label>Sucursal</label>
                     </span>
-                    <small
-                        *ngIf="enviado && viajeEditarForm.get('sucu_Id')?.errors?.['required']"
-                        style="color: #fc6161 !important"
-                    >
-                        El campo es requerido.
-                    </small>
                 </div>
                 <div class="field col-12 md:col-6">
                     <span class="p-float-label">
@@ -78,63 +62,30 @@
                             [yearRange]="anioRango"
                             [minDate]="fechaMinima"
                             [maxDate]="fechaMaxima"
-                            (onSelect)="seleccionarFecha($event)"
-                            [ngClass]="{
-                                'ng-invalid ng-dirty':
-                                    enviado &&
-                                    viajeEditarForm.get(
-                                        'vien_Fecha'
-                                    )?.invalid
-                            }"
+                            [disabled]="true"
                         ></p-calendar>
                         <label>Fecha</label>
                     </span>
-                    <small
-                        *ngIf="
-                enviado &&
-                    viajeEditarForm.get('vien_Fecha')?.errors?.['required']
-                "
-                        style="color: #fc6161 !important"
-                    >
-                        El campo es requerido.
-                    </small>
                 </div>
                 <div class="field col-12 md:col-6">
                     <span class="p-float-label">
                         <p-autoComplete
                             inputId="acencargado"
                             [(ngModel)]="seleccionadoTransportista"
-                            [suggestions]="filtradoTransportistas"
-                            (completeMethod)="filtroTransportista($event)"
                             field="tran_Nombre"
-                            placeholder="Seleccione el encargado."
                             [dropdown]="true"
-                            [showClear]="true"
-                            (onClear)="limpiarTransportista()"
-                            (onSelect)="seleccionarTransportista($event)"
                             [ngModelOptions]="{ standalone: true }"
-                            [ngClass]="{
-                                'ng-invalid ng-dirty':
-                                    enviado &&
-                                    viajeEditarForm.get('tran_Id')
-                                        ?.invalid
-                            }"
+                            [disabled]="true"
                         ></p-autoComplete>
                         <label>Encargado</label>
                     </span>
-                    <small
-                        *ngIf="enviado && viajeEditarForm.get('tran_Id')?.errors?.['required']"
-                        style="color: #fc6161 !important"
-                    >
-                        El campo es requerido.
-                    </small>
                 </div>
                 <div class="field col-12 md:col-6">
                     <span class="p-float-label">
                         <input
                         pInputText
                         type="text"
-                        [value]="transportistaTarifa | number:'1.2-2'"
+                        [value]="'LPS ' + (transportistaTarifa | number:'1.2-2')"
                         disabled
                         style="color: black;"
                     />
@@ -147,25 +98,13 @@
                         <input
                         pInputText
                         type="text"
-                        [value]="distanciaTotal"
+                        [value]="distanciaTotal + ' Km'"
                         disabled
                         style="color: black;"
                     />
                     <label>Distancia Total</label>
                     </span>
 
-                </div>
-                <div class="field col-12 md:col-6">
-                    <span class="p-float-label">
-                        <input
-                            pInputText
-                            type="text"
-                            [value]="totalPagar | number:'1.2-2'" 
-                            disabled
-                            style="color: black;"
-                        />
-                        <label>Total a Pagar</label>
-                    </span>
                 </div>
                 
             </div>
@@ -180,7 +119,7 @@
                 [globalFilterFields]="[
                     'codigo',
                     'cola_DNI',
-                    'colaborador',
+                    'colaboradorDNI',
                     'cosu_Distanciakm'
                 ]"
                 [showCurrentPageReport]="true"
@@ -221,7 +160,6 @@
                     <tr>
                         <th class="text-center" style="width: 10rem">
                             <p-tableHeaderCheckbox
-                                [disabled]="!habilitarSeleccionColaboradores"
                             ></p-tableHeaderCheckbox>
                         </th>
                         <th pSortableColumn="codigo" style="width: 10rem">
@@ -234,9 +172,9 @@
                             DNI
                             <p-sortIcon field="cola_DNI"></p-sortIcon>
                         </th>
-                        <th class="text-center" pSortableColumn="colaborador" >
+                        <th class="text-center" pSortableColumn="colaboradorDNI" >
                             Colaborador
-                            <p-sortIcon field="colaborador"></p-sortIcon>
+                            <p-sortIcon field="colaboradorDNI"></p-sortIcon>
                         </th>
                         <th
                             class="text-center"
@@ -252,12 +190,12 @@
                         <td class="text-center">
                             <p-tableCheckbox
                                 [value]="colaborador"
-                                [disabled]="!habilitarSeleccionColaboradores || colaborador['deshabilitado']"
+                                [disabled]="colaborador['deshabilitado']"
                             ></p-tableCheckbox>
                         </td>
                         <td>{{ colaborador.codigo }}</td>
                         <td>{{ colaborador.cola_DNI }}</td>
-                        <td>{{ colaborador.colaborador }}</td>
+                        <td>{{ colaborador.colaboradorDNI }}</td>
                         <td class="text-center">{{ colaborador.cosu_Distanciakm }}</td>
                     </tr>
                 </ng-template>
@@ -304,6 +242,6 @@
                 </div>
             </div>
         </form>
-    <!-- </div> -->
+    </div>
 
 </div>

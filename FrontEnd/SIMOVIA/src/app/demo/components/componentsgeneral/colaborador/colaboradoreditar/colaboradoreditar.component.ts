@@ -109,6 +109,7 @@ export class ColaboradorEditarComponent implements OnInit {
             cola_Sexo: ['F', [Validators.pattern('^[MF]$')]],
             cola_FechaNacimiento: [null, [Validators.required]],
             muni_Id: [null, [Validators.required]],
+            depa_Id: [null, [Validators.required]],
             civi_Id: [null, [Validators.required]],
             carg_Id: [null, [Validators.required]],
             cola_UsuarioModificacion: [null],
@@ -155,6 +156,7 @@ export class ColaboradorEditarComponent implements OnInit {
                             colaborador.cola_FechaNacimiento
                         ), // Convertir fecha
                         muni_Id: colaborador.muni_Id,
+                        depa_Id:colaborador.depa_Id,
                         civi_Id: colaborador.civi_Id,
                         carg_Id: colaborador.carg_Id,
                     });
@@ -352,6 +354,7 @@ export class ColaboradorEditarComponent implements OnInit {
                             );
     
                             this.seleccionadoMunicipio = this.municipios.find((mun) => mun.muni_Id === municipio);
+                        console.log('selec muni', this.seleccionadoMunicipio);
                         },
                         error: (error) => {
                             console.error('Error al cargar los municipios:', error);
@@ -503,11 +506,13 @@ export class ColaboradorEditarComponent implements OnInit {
         );
     }
     seleccionandoDepartamento(event: any) {
-        this.seleccionadoDepartamento = event?.value?.depa_Id;
+        this.seleccionadoDepartamento = event?.value;
+        const depaId = event?.value.depa_Id;
+        this.colaboradorEditarForm.controls['depa_Id'].setValue(depaId); // Actualizar el formulario
 
-        if (this.seleccionadoDepartamento) {
+        if (depaId) {
             this.municipioService
-                .ListarPorDepartamento(this.seleccionadoDepartamento)
+                .ListarPorDepartamento(depaId)
                 .subscribe(
                     (response) => {
                         this.municipios = response.sort((a: any, b: any) =>
@@ -552,6 +557,7 @@ export class ColaboradorEditarComponent implements OnInit {
         this.municipios = [];
         this.filtradoMunicipios = [];
         this.seleccionadoMunicipio = null;
+        this.colaboradorEditarForm.controls['depa_Id'].setValue(null);
         this.colaboradorEditarForm.controls['muni_Id'].setValue(null);
     }
     limpiarMunicipio() {
@@ -732,7 +738,7 @@ export class ColaboradorEditarComponent implements OnInit {
         this.seleccionadoMunicipio = null;
 
         this.colaboradorService.limpiarId();
-        this.router.navigate(['/general/colaborador']);
+        this.router.navigate(['/SIMOVIA/general/colaborador']);
     }
 
     asignarSucursales(cola_Id: number) {

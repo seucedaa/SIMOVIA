@@ -1,5 +1,4 @@
 <div class="card">
-    <!-- Encabezado -->
     <div
         style="
             display: flex;
@@ -23,13 +22,12 @@
         </div>
 
         <div>
-            <h1 style="margin: 0">Detalle Colaborador</h1>
+            <h1 style="margin: 0">Detalle Viaje</h1>
         </div>
     </div>
 
     <hr />
 
-    <!-- Spinner de Carga -->
     <div
         *ngIf="cargando"
         class="flex justify-content-center align-items-center"
@@ -38,47 +36,34 @@
         <p-progressSpinner></p-progressSpinner>
     </div>
 
-    <!-- Detalles del Colaborador -->
     <div *ngIf="!cargando">
         <div class="grid p-fluid mt-3">
             <div class="field col-12 md:col-4">
-                <label><b>Número de Identidad</b></label>
-                <p>{{ colaborador?.cola_DNI }}</p>
+                <label><b>Sucursal</b></label>
+                <p>{{ viaje?.sucursal }}</p>
             </div>
             <div class="field col-12 md:col-4">
-                <label><b>Colaborador</b></label>
-                <p>{{ colaborador?.colaborador }}</p>
+                <label><b>Fecha</b></label>
+                <p>{{ viaje?.vien_Fecha | date : "dd/MM/yyyy"}}</p>
             </div>
             <div class="field col-12 md:col-4">
-                <label><b>Correo Electrónico</b></label>
-                <p>{{ colaborador?.cola_CorreoElectronico }}</p>
+                <label><b>Distancia Recorrida</b></label>
+                <p>{{ viaje?.vien_DistanciaTotalkm }} Km</p>
             </div>
             <div class="field col-12 md:col-4">
-                <label><b>Fecha de Nacimiento</b></label>
-                <p>{{ colaborador?.cola_FechaNacimiento | date : "dd/MM/yyyy" }}</p>
+                <label><b>Encargado</b></label>
+                <p>{{ viaje?.transportista }}</p>
             </div>
             <div class="field col-12 md:col-4">
-                <label><b>Cargo</b></label>
-                <p>{{ colaborador?.cargo }}</p>
-            </div>
-            <div class="field col-12 md:col-4">
-                <label><b>Municipio</b></label>
-                <p>{{ colaborador?.municipio }}</p>
-            </div>
-            <div class="field col-12 md:col-4">
-                <label><b>Sexo</b></label>
-                <p>{{ colaborador?.sexo }}</p>
-            </div>
-            <div class="field col-12 md:col-4">
-                <label><b>Estado Civil</b></label>
-                <p>{{ colaborador?.estadocivil }}</p>
+                <label><b>Total</b></label>
+                <p>LPS   {{ viaje?.vien_Total | number:'1.2-2' }}</p>
             </div>
         </div>
 
-        <h3>Sucursales</h3>
+        <h3>Colaboradores</h3>
         <div class="grid p-fluid mt-3">
-            <div class="field col-12 md:col-3" *ngFor="let sucursal of sucursalesColaborador">
-                <p>{{ sucursal.sucu_Descripcion }}</p>
+            <div class="field col-12 md:col-3" *ngFor="let colaborador of colaboradoresViaje">
+                <p>{{ colaborador.colaboradorDNI }}</p>
             </div>
         </div>
         
@@ -89,7 +74,7 @@
         <h3><b>Auditoría</b></h3>
         <hr>
         <p-table
-            [value]="[colaborador]"
+            [value]="[viaje]"
             responsiveLayout="scroll"
             styleClass="p-datatable-striped"
         >
@@ -100,20 +85,20 @@
                     <th>Fecha</th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-colaborador>
+            <ng-template pTemplate="body" let-viaje>
                 <tr>
                     <td>Creado</td>
-                    <td>{{ colaborador.usuarioCreacion || "N/A" }}</td>
+                    <td>{{ viaje.usuarioCreacion || "N/A" }}</td>
                     <td>
-                        {{ colaborador.cola_FechaCreacion | date : "dd/MM/yyyy hh:mm:ss a" }}
+                        {{ viaje.vien_FechaCreacion | date : "dd/MM/yyyy hh:mm:ss a" }}
                     </td>
                 </tr>
                 <tr>
                     <td>Modificado</td>
-                    <td>{{ colaborador.usuarioModificacion || "N/A" }}</td>
+                    <td>{{ viaje.usuarioModificacion || "N/A" }}</td>
                     <td>
                         {{
-                            colaborador.cola_FechaModificacion ? (colaborador.cola_FechaModificacion
+                            viaje.vien_FechaModificacion ? (viaje.vien_FechaModificacion
                                   | date : "dd/MM/yyyy hh:mm:ss a") : "N/A"
                         }}
                     </td>

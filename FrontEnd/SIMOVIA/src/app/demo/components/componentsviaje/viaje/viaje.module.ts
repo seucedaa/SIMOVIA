@@ -27,6 +27,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { TabViewModule } from 'primeng/tabview';
 import { ViajeCrearComponent } from './viajecrear/viajecrear.component';
 import { ViajeEditarComponent } from './viajeeditar/viajeeditar.component';
+import { ViajeDetalleComponent } from './viajedetalle/viajedetalle.component';
 
 @NgModule({
 	imports: [
@@ -56,6 +57,6 @@ import { ViajeEditarComponent } from './viajeeditar/viajeeditar.component';
         CalendarModule,
         TabViewModule
 	],
-	declarations: [ViajeComponent, ViajeCrearComponent, ViajeEditarComponent]
+	declarations: [ViajeComponent, ViajeCrearComponent, ViajeEditarComponent, ViajeDetalleComponent]
 })
 export class ViajeModule { }

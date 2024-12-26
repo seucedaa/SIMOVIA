@@ -5,7 +5,7 @@ import { Table } from 'primeng/table';
 import { viaje } from 'src/app/demo/models/modelsviaje/viajeencabezadoviewmodel';
 import { viajeService } from 'src/app/demo/services/servicesviaje/viajeencabezado.service';
 @Component({
-    selector: 'general-viaje',
+    selector: 'viaje-viaje',
     templateUrl: './viaje.component.html',
     styleUrls: ['./viaje.component.scss'],
     providers: [MessageService],
@@ -82,12 +82,12 @@ export class ViajeComponent implements OnInit {
 
     detalleViaje(viaje: viaje) {
         this.viajeService.almacenarId(viaje.vien_Id!);
-        this.router.navigate(['/general/viaje/viajedetalle']);
+        this.router.navigate(['/SIMOVIA/viaje/viaje/viajedetalle']);
     }
 
     editarViaje(viaje: viaje) {
         this.viajeService.almacenarId(viaje.vien_Id!);
-        this.router.navigate(['/general/viaje/viajeeditar']);
+        this.router.navigate(['/SIMOVIA/viaje/viaje/viajeeditar']);
     }
 
     modalEliminarViaje(viaje: viaje) {

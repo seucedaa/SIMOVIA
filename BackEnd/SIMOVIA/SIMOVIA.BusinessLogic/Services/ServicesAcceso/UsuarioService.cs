@@ -20,22 +20,24 @@ namespace SIMOVIA.BusinessLogic.Services.ServicesAcceso
             _usuarioRepository = usuarioRepository;
         }
 
-        public ServiceResult InicioSesion(string usuario, string clave)
+        public ServiceResult IniciarSesion(string usuario, string clave)
         {
-            var result = new ServiceResult();
-
             try
             {
-                var respuesta = _usuarioRepository.InicioSesion(usuario, clave);
+                var userSessionData = _usuarioRepository.InicioSesion(usuario, clave);
 
-                return result.Ok(respuesta);
+                if (userSessionData == null)
+                {
+                    return new ServiceResult().Unauthorized("Usuario o contraseña incorrectos, o el usuario está inactivo.");
+                }
+
+                return new ServiceResult().Ok("Inicio de sesión exitoso.", userSessionData);
             }
             catch (Exception ex)
             {
-                result.Error(ex.Message);
-
-                throw;
+                return new ServiceResult().Error($"Error al iniciar sesión: {ex.Message}");
             }
         }
+
     }
 }

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { sucursal } from 'src/app/demo/models/modelsviaje/sucursalviewmodel';
 import { sucursalService } from 'src/app/demo/services/servicesviaje/sucursal.service';
-import { colaborador } from 'src/app/demo/models/modelsgeneral/colaboradorviewmodel';
 import { colaboradorService } from 'src/app/demo/services/servicesgeneral/colaborador.service';
 import { colaboradorPorSucursalService } from 'src/app/demo/services/servicesviaje/colaboradorporsucursal.service';
 import { transportistaService } from 'src/app/demo/services/servicesviaje/transportista.service';
@@ -14,7 +13,7 @@ import { colaboradoresPorSucursal, colaboradorPorSucursal } from 'src/app/demo/m
 import { viajeDetalleService } from 'src/app/demo/services/servicesviaje/viajedetalle.service';
 import { viajeDetalle } from 'src/app/demo/models/modelsviaje/viajedetalleviewmodel';
 @Component({
-    selector: 'acceso-colaborador-colaboradordetalle',
+    selector: 'viaje-viaje-viajedetalle',
     templateUrl: './viajecrear.component.html',
     styleUrls: ['./viajecrear.component.scss'],
     providers: [MessageService]
@@ -74,6 +73,7 @@ export class ViajeCrearComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.transportistaTarifa = 0;
         this.cargarViajes();
         //AUTOCOMPLETES
         this.sucursalService.Listar().subscribe((response) => {
@@ -109,51 +109,113 @@ export class ViajeCrearComponent implements OnInit {
             },
         });
     }
+    
+    filtrarColaboradores(): void {
+        let colaboradoresFiltrados = [...this.colaboradoresFiltrados];
+    
+        const fechaSeleccionada = this.viajeCrearForm.controls['vien_Fecha'].value;
+        const sucursalId = this.viajeCrearForm.controls['sucu_Id'].value;
+    
+        // Filtro por sucursal
+        if (sucursalId) {
+            colaboradoresFiltrados = colaboradoresFiltrados.filter(
+                (colaborador) => colaborador.sucu_Id === sucursalId
+            );
+        }
+    
+        // Filtro por fecha
+        if (fechaSeleccionada) {
+            const fechaFormato = new Date(fechaSeleccionada).toISOString().split('T')[0];
+    
+            const viajesEnFecha = this.viajes.filter(
+                (viaje) => viaje.vien_Fecha?.split('T')[0] === fechaFormato
+            );
+    
+            if (viajesEnFecha.length > 0) {
+                // Hay viajes en esta fecha, tomar el vien_Id
+                const vienId = viajesEnFecha[0].vien_Id; // Tomamos el primer viaje encontrado
+        
+                // Consultar los colaboradores asociados a ese viaje
+                this.viajeDetalleService.Buscar(vienId).subscribe({
+                    next: (detalles: any[]) => {
+                        // Obtener los IDs de los colaboradores que ya hicieron un viaje
+                        const colaboradoresConViaje = detalles.map((detalle) => detalle.cola_Id);
+        
+                        // Filtrar la tabla de colaboradores excluyendo estos IDs
+                        this.colaboradores = this.colaboradores.filter(
+                            (colaborador) => !colaboradoresConViaje.includes(colaborador.cola_Id)
+                        );
+                    },
+                    error: (err) => {
+                        console.error('Error al obtener detalles del viaje:', err);
+                    },
+                });
+            } 
+        }
+    
+        // Actualizar lista filtrada
+        this.colaboradores = colaboradoresFiltrados;
+    
+        console.log('Colaboradores filtrados:', this.colaboradores);
+    }
 
     seleccionarFecha(event: any): void {
-        const fechaSeleccionada = event; // Fecha seleccionada del calendario
+        const fechaSeleccionada = event;
         if (!fechaSeleccionada) {
             this.habilitarSeleccionColaboradores = false;
             return;
         }
+    
         this.viajeCrearForm.controls['vien_Fecha'].setValue(fechaSeleccionada); // Actualizar el formulario
         this.verificarHabilitacionColaboradores(); // Verificar habilitación después de seleccionar la fecha
     
-        // Formatear la fecha seleccionada en el formato
-        const fechaFormato = new Date(fechaSeleccionada).toISOString().split('T')[0];
+        // Llamar al filtrado general
+        this.filtrarColaboradores();
+    }
+    seleccionarSucursal(sucursal: any): void {
+        this.seleccionadoSucursal = sucursal.value;
+        const sucursalId = sucursal?.value.sucu_Id;
     
-        // Buscar si hay viajes existentes en la fecha seleccionada
-        const viajesEnFecha = this.viajes.filter(
-            (viaje) => viaje.vien_Fecha?.split('T')[0] === fechaFormato
-        );
+        // Limpiar colaboradores seleccionados, distancia total y total a pagar
+        this.colaboradoresSeleccionados = [];
+        this.distanciaTotal = 0;
+        this.totalPagar = 0;
     
-        if (viajesEnFecha.length > 0) {
-            // Hay viajes en esta fecha, tomar el vien_Id
-            const vienId = viajesEnFecha[0].vien_Id; // Tomamos el primer viaje encontrado
+        if (sucursalId) {
+            this.viajeCrearForm.controls['sucu_Id'].setValue(sucursalId); // Actualizar el formulario
     
-            // Consultar los colaboradores asociados a ese viaje
-            this.viajeDetalleService.Buscar(vienId).subscribe({
-                next: (detalles: any[]) => {
-                    // Obtener los IDs de los colaboradores que ya hicieron un viaje
-                    const colaboradoresConViaje = detalles.map((detalle) => detalle.cola_Id);
+            this.colaboradorPorSucursalService.Listar(sucursalId).subscribe({
+                next: (colaboradoresPorSucursal: any[]) => {
+                    this.colaboradoresFiltrados = colaboradoresPorSucursal.map(colaborador => ({
+                        codigo: colaborador.codigo,
+                        cola_Id: colaborador.cola_Id,
+                        cola_DNI: colaborador.cola_DNI,
+                        colaborador: colaborador.colaborador,
+                        cosu_Distanciakm: colaborador.cosu_Distanciakm || 0,
+                        sucu_Id: colaborador.sucu_Id
+                    }));
+                    this.colaboradores = colaboradoresPorSucursal.map(colaborador => ({
+                        codigo: colaborador.codigo,
+                        cola_Id: colaborador.cola_Id,
+                        cola_DNI: colaborador.cola_DNI,
+                        colaborador: colaborador.colaborador,
+                        cosu_Distanciakm: colaborador.cosu_Distanciakm || 0,
+                        sucu_Id: colaborador.sucu_Id
+                    }));
+                    this.verificarHabilitacionColaboradores();
     
-                    console.log('Colaboradores con viaje:', colaboradoresConViaje);
-    
-                    // Filtrar la tabla de colaboradores excluyendo estos IDs
-                    this.colaboradores = this.colaboradores.filter(
-                        (colaborador) => !colaboradoresConViaje.includes(colaborador.cola_Id)
-                    );
-    
-                    console.log('Colaboradores filtrados:', this.colaboradores);
+                    // Llamar al filtrado general
+                    this.filtrarColaboradores();
                 },
                 error: (err) => {
-                    console.error('Error al obtener detalles del viaje:', err);
+                    console.error('Error al cargar colaboradores por sucursal:', err);
+                    this.colaboradores = []; // Limpia la tabla en caso de error
                 },
             });
         } else {
-            this.colaboradores = this.colaboradoresFiltrados;
-            // Si no hay viajes en esa fecha, no filtrar colaboradores
-            console.log('No hay viajes en la fecha seleccionada.');
+            // Si no hay sucursal seleccionada, limpia la tabla
+            this.colaboradores = [];
+            this.colaboradoresFiltrados = [];
         }
     }
     
@@ -278,53 +340,6 @@ export class ViajeCrearComponent implements OnInit {
         });
     }
     
-    seleccionarSucursal(sucursal: any): void {
-        this.seleccionadoSucursal = sucursal.value;
-        const sucursalId = sucursal?.value.sucu_Id;
-
-        // Limpiar colaboradores seleccionados, distancia total y total a pagar
-        this.colaboradoresSeleccionados = [];
-        this.distanciaTotal = 0;
-        this.totalPagar = 0;
-    
-        if (sucursalId) {
-        this.viajeCrearForm.controls['sucu_Id'].setValue(sucursalId); // Actualizar el formulario
-
-            this.colaboradorPorSucursalService.Listar(sucursalId).subscribe({
-                next: (colaboradoresPorSucursal: any[]) => {
-                    // Transforma los datos recibidos al modelo
-                    this.colaboradoresFiltrados = colaboradoresPorSucursal.map(colaborador => ({
-                        codigo: colaborador.codigo,
-                        cola_Id: colaborador.cola_Id,
-                        cola_DNI: colaborador.cola_DNI,
-                        colaborador: colaborador.colaborador,
-                        cosu_Distanciakm: colaborador.cosu_Distanciakm || 0,
-                        sucu_Id: colaborador.sucu_Id
-                    }));
-                    this.colaboradores = colaboradoresPorSucursal.map(colaborador => ({
-                        codigo: colaborador.codigo,
-                        cola_Id: colaborador.cola_Id,
-                        cola_DNI: colaborador.cola_DNI,
-                        colaborador: colaborador.colaborador,
-                        cosu_Distanciakm: colaborador.cosu_Distanciakm || 0,
-                        sucu_Id: colaborador.sucu_Id
-                    }));
-                    this.verificarHabilitacionColaboradores();
-
-                },
-                error: (err) => {
-                    console.error('Error al cargar colaboradores por sucursal:', err);
-                    this.colaboradores = []; // Limpia la tabla en caso de error
-                }
-            });
-        } else {
-            // Si no hay sucursal seleccionada, limpia la tabla
-            this.colaboradores = [];
-            this.colaboradoresFiltrados = [];
-        }
-    }
-    
-    
         
     //FILTROS AUTOCOMPLETES
     filtroSucursal(event: any) {
@@ -363,7 +378,7 @@ export class ViajeCrearComponent implements OnInit {
         this.seleccionadoSucursal = null;
         this.seleccionadoTransportista =null;
         this.colaboradorService.limpiarId();
-        this.router.navigate(['/viaje/viaje']);
+        this.router.navigate(['/SIMOVIA/viaje/viaje']);
     }
     
     asignarColaboradores(vien_Id: number): void {

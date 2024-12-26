@@ -17,6 +17,8 @@ namespace SIMOVIA.Entities.Entities
         public string codigo { get; set; }
         public string transportista { get; set; }
         public string sucursal { get; set; }
+        public string usuarioCreacion { get; set; }
+        public string usuarioModificacion { get; set; }
 
         public int vien_Id { get; set; }
         public DateTime vien_Fecha { get; set; }

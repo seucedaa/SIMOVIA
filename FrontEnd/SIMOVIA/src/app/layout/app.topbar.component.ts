@@ -40,7 +40,7 @@ export class AppTopBarComponent {
     
             this.messageService.add({ severity: 'info', summary: 'Listo', detail: 'Sesión cerrada con éxito' });
     
-            this.router.navigate(['/login']);
+            this.router.navigate(['/auth/login']);
           },
           reject: () => {
           }

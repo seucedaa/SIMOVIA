@@ -1,0 +1,46 @@
+<div class="card">
+    <h3>Ventas de Productos</h3>
+    <div class="col-2">
+        
+    </div>
+    <div class="grid p-fluid">
+        <div class="field col-12 md:col-4">
+                <span class="p-float-label">
+                    <p-dropdown [options]="sucursales" 
+                        optionLabel="sucur_Descripcion" 
+                        optionValue="sucur_Id"
+                        (onChange)="onSucursalChange($event.value)" 
+                        [(ngModel)]="sucursalid">
+                        </p-dropdown>   
+                <label for="dropdown">Sucursal</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-4">
+            <span class="p-float-label">
+                <p-calendar
+                    inputId="calendar"
+                    [(ngModel)]="inicio"
+                    (onSelect)="onFechaChange('inicio', $event)"
+                ></p-calendar>
+                <label for="calendar">Fecha Inicio</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-4">
+            <span class="p-float-label">
+                <p-calendar
+                    inputId="calendar"
+                    [(ngModel)]="fin"
+                    (onSelect)="onFechaChange('fin', $event)"
+                ></p-calendar>
+                <label for="calendar">Fecha Fin</label>
+            </span>
+        </div>
+        <div class="field col-12">
+            <iframe title="PDF-file" #pdfViewer style="width:100%;height:800px;"></iframe>
+        </div>
+       
+    </div>
+    
+</div>
+
+

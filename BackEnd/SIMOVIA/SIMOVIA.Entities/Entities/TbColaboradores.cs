@@ -18,6 +18,7 @@ namespace SIMOVIA.Entities.Entities
         //PARA LISTAR
         public string codigo { get; set; }
         public string colaborador { get; set; }
+        public string colaboradorDNI { get; set; }
         public string sexo { get; set; }
         public int depa_Id { get; set; }
         public string municipio { get; set; }

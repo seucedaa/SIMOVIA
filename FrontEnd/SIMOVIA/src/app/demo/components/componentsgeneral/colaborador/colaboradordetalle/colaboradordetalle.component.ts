@@ -65,7 +65,7 @@ export class ColaboradorDetalleComponent implements OnInit {
     
     regresar() {
         this.colaboradorService.limpiarId();
-        this.router.navigate(['/general/colaborador']);
+        this.router.navigate(['/SIMOVIA/general/colaborador']);
     }
 
     obtenerDetallesColaborador() {
