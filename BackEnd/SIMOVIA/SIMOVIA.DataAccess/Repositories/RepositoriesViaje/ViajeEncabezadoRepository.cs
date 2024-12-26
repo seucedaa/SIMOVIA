@@ -109,6 +109,24 @@ namespace SIMOVIA.DataAccess.Repositories.RepositoriesViaje
             }
         }
 
+
+        /// <summary>
+        /// Obtiene una lista de  los viajes con sus detalles.
+        /// </summary>
+        /// <returns>Lista de viajes.</returns>
+        public virtual IEnumerable<tbViajesEncabezado> Report(int tran_Id, DateTime fechaInicio, DateTime fechafin)
+        {
+            List<tbViajesEncabezado> result = new List<tbViajesEncabezado>();
+            using (var db = new SqlConnection(SIMOVIA.ConnectionString))
+            {
+                var parameter = new DynamicParameters();
+                parameter.Add("@tran_Id", tran_Id);
+                parameter.Add("@fechaInicio", fechaInicio);
+                parameter.Add("@fechafin", fechafin);
+                result = db.Query<tbViajesEncabezado>(ScriptsDataBase.ListarReporteViaje, parameter, commandType: CommandType.StoredProcedure).ToList();
+                return result;
+            }
+        }
         /// <summary>
         /// Actualiza un registro de viaje encabezado en la base de datos.
         /// </summary>

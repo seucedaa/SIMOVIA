@@ -88,18 +88,18 @@
             <ng-template pTemplate="body" let-viaje>
                 <tr>
                     <td>Creado</td>
-                    <td>{{ viaje.usuarioCreacion || "N/A" }}</td>
+                    <td>{{ viaje.usuarioCreacion || "" }}</td>
                     <td>
                         {{ viaje.vien_FechaCreacion | date : "dd/MM/yyyy hh:mm:ss a" }}
                     </td>
                 </tr>
                 <tr>
                     <td>Modificado</td>
-                    <td>{{ viaje.usuarioModificacion || "N/A" }}</td>
+                    <td>{{ viaje.usuarioModificacion || "" }}</td>
                     <td>
                         {{
                             viaje.vien_FechaModificacion ? (viaje.vien_FechaModificacion
-                                  | date : "dd/MM/yyyy hh:mm:ss a") : "N/A"
+                                  | date : "dd/MM/yyyy hh:mm:ss a") : ""
                         }}
                     </td>
                 </tr>

@@ -103,18 +103,18 @@
             <ng-template pTemplate="body" let-colaborador>
                 <tr>
                     <td>Creado</td>
-                    <td>{{ colaborador.usuarioCreacion || "N/A" }}</td>
+                    <td>{{ colaborador.usuarioCreacion || "" }}</td>
                     <td>
                         {{ colaborador.cola_FechaCreacion | date : "dd/MM/yyyy hh:mm:ss a" }}
                     </td>
                 </tr>
                 <tr>
                     <td>Modificado</td>
-                    <td>{{ colaborador.usuarioModificacion || "N/A" }}</td>
+                    <td>{{ colaborador.usuarioModificacion || "" }}</td>
                     <td>
                         {{
                             colaborador.cola_FechaModificacion ? (colaborador.cola_FechaModificacion
-                                  | date : "dd/MM/yyyy hh:mm:ss a") : "N/A"
+                                  | date : "dd/MM/yyyy hh:mm:ss a") : ""
                         }}
                     </td>
                 </tr>

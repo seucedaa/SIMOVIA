@@ -119,7 +119,7 @@
                 [globalFilterFields]="[
                     'codigo',
                     'cola_DNI',
-                    'colaboradorDNI',
+                    'colaborador',
                     'cosu_Distanciakm'
                 ]"
                 [showCurrentPageReport]="true"
@@ -172,9 +172,9 @@
                             DNI
                             <p-sortIcon field="cola_DNI"></p-sortIcon>
                         </th>
-                        <th class="text-center" pSortableColumn="colaboradorDNI" >
+                        <th class="text-center" pSortableColumn="colaborador" >
                             Colaborador
-                            <p-sortIcon field="colaboradorDNI"></p-sortIcon>
+                            <p-sortIcon field="colaborador"></p-sortIcon>
                         </th>
                         <th
                             class="text-center"
@@ -195,7 +195,7 @@
                         </td>
                         <td>{{ colaborador.codigo }}</td>
                         <td>{{ colaborador.cola_DNI }}</td>
-                        <td>{{ colaborador.colaboradorDNI }}</td>
+                        <td>{{ colaborador.colaborador }}</td>
                         <td class="text-center">{{ colaborador.cosu_Distanciakm }}</td>
                     </tr>
                 </ng-template>

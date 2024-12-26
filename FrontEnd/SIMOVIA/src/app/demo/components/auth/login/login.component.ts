@@ -36,6 +36,8 @@ export class LoginComponent {
       next: (response) => {
 
 
+        sessionStorage.setItem('userData', JSON.stringify(response.data));
+
         this.credencialesIncorrectas = '';
         this.router.navigate(['SIMOVIA']);
 

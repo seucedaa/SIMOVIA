@@ -68,6 +68,31 @@ namespace SIMOVIA.BusinessLogic.Services.ServicesViaje
         }
 
         /// <summary>
+        /// Busca detalles de un viaje en la base de datos para el reporte.
+        /// </summary>
+        /// <param name="tran_Id">El identificador único del transportista.</param>
+        /// <param name="fechaInicio">Fecha inicial para obtener los detalles del viaje.</param>
+        /// <param name="fechaFin">Fecha final para obtener los detalles del viaje.</param>
+        /// <returns>
+        /// Un objeto ServiceResult que indica el resultado de la operación:
+        /// - Result = Success y Data contiene los datos del viaje.
+        /// - Result = Error si ocurre un error inesperado durante la operación.
+        /// </returns>
+        public ServiceResult Reporte(int tran_Id, DateTime fechaInicio, DateTime fechaFin)
+        {
+            var result = new ServiceResult();
+            try
+            {
+                var map = _viajeRepository.Report(tran_Id, fechaInicio, fechaFin);
+                return result.Ok(map);
+            }
+            catch (Exception ex)
+            {
+                return result.Error(ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Busca un viaje en la base de datos por su ID.
         /// </summary>
         /// <param name="id">El identificador único del viaje a buscar.</param>

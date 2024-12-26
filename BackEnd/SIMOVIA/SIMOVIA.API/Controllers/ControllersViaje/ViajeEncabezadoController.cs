@@ -40,6 +40,20 @@ namespace SIMOVIA.API.Controllers.ControllersViaje
         }
 
         /// <summary>
+        /// Obtiene una lista de todos los viajes.
+        /// <param name="tran_Id">ID unico del transportista.</param>
+        /// <param name="fechaInicio">Fecha final para obtener los detalles del viaje.</param>
+        /// <param name="fechaFin">Fecha final para obtener los detalles del viaje.</param>
+        /// </summary>
+        /// <returns>Lista de viajes disponibles.</returns>
+        [HttpGet("Reporte/{tran_Id}/{fechaInicio}/{fechaFin}")]
+        public IActionResult Reporte(int tran_Id, DateTime fechaInicio, DateTime fechaFin)
+        {
+            var response = _viajeService.Reporte(tran_Id, fechaInicio, fechaFin);
+            return Ok(response.Data);
+        }
+
+        /// <summary>
         /// Inserta un nuevo viaje en la base de datos.
         /// </summary>
         /// <param name="rolViewModel">El objeto ViajeEncabezadoViewModel que contiene los datos del viaje a insertar.</param>
